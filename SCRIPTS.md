@@ -356,16 +356,16 @@ EXTRACT-SQL.bat "dump.sql" "output.txt"
 
 ---
 
-## Автокоммит README / SCRIPTS
+## Автокоммит README
 
-После правок в `README.md` или `SCRIPTS.md` можно автоматически коммитить и пушить (только эти два файла, остальные изменения не трогает).
+После правок в `README.md` можно автоматически коммитить и пушить (только этот файл; `SCRIPTS.md` и остальное не трогает).
 
 | Скрипт | Назначение |
 |--------|------------|
 | `INSTALL-README-AUTO-COMMIT-TASK.bat` | Планировщик Windows: проверка **каждые 3 мин** + Cursor hook |
 | `WATCH-README-AUTO-COMMIT.bat` | Watcher: коммит **~8 сек после сохранения** (окно держать открытым) |
 | `UNINSTALL-README-AUTO-COMMIT-TASK.bat` | Удалить задачу планировщика |
-| `scripts\auto-commit-readme.ps1` | Ядро: `git add` только README + SCRIPTS → commit → push |
+| `scripts\auto-commit-readme.ps1` | Ядро: `git add` только README.md → commit → push |
 
 **Установка (один раз):**
 
@@ -373,9 +373,9 @@ EXTRACT-SQL.bat "dump.sql" "output.txt"
 INSTALL-README-AUTO-COMMIT-TASK.bat
 ```
 
-Нужен `git push` без запроса пароля (Git Credential Manager / `gh auth login`). Сообщение коммита: `docs: auto-commit README/SCRIPTS (YYYY-MM-DD HH:mm)`.
+Нужен `git push` без запроса пароля (Git Credential Manager / `gh auth login`). Сообщение коммита: `docs: auto-commit README (YYYY-MM-DD HH:mm)`.
 
-Cursor hook (`.cursor/hooks.json`) срабатывает при правках через Agent/Tab. Ручные правки в редакторе покрывает **планировщик** или **WATCH-README-AUTO-COMMIT.bat**.
+Cursor hook (`.cursor/hooks.json`) срабатывает при правках README через Agent/Tab. Ручные правки покрывает **планировщик** или **WATCH-README-AUTO-COMMIT.bat**.
 
 ---
 
@@ -399,8 +399,8 @@ All `.bat` files live in the **repository root**. Each script sets UTF-8 (`chcp 
 | `APPEND-DB.bat` | Append to LMDB |
 | `MERGE.bat` | mail:hash + hash:pass merge |
 | `EXTRACT-SQL.bat` | SQL → email:hash |
-| `INSTALL-README-AUTO-COMMIT-TASK.bat` | Schedule auto-commit for README/SCRIPTS |
-| `WATCH-README-AUTO-COMMIT.bat` | Watch README/SCRIPTS and commit after save |
+| `INSTALL-README-AUTO-COMMIT-TASK.bat` | Schedule auto-commit for README.md only |
+| `WATCH-README-AUTO-COMMIT.bat` | Watch README.md and commit after save |
 
 ---
 

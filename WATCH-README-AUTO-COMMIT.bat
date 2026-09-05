@@ -2,7 +2,7 @@
 chcp 65001 >nul
 cd /d "%~dp0"
 
-echo README/SCRIPTS file watcher — auto-commit ~8s after save, then push
+echo README file watcher — auto-commit ~8s after save, then push
 echo Close this window to stop.
 echo.
 

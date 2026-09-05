@@ -11,7 +11,7 @@ $hookScript = Join-Path $hooksDir "auto-commit-readme-hook.ps1"
 @'
 $ErrorActionPreference = "SilentlyContinue"
 $raw = [Console]::In.ReadToEnd()
-if ($raw -notmatch "README\.md" -and $raw -notmatch "SCRIPTS\.md") { exit 0 }
+if ($raw -notmatch "README\.md") { exit 0 }
 
 $repo = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).Path
 

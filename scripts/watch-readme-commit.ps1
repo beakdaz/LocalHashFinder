@@ -8,13 +8,13 @@ $ErrorActionPreference = "Stop"
 Set-Location $RepoRoot
 
 $AutoScript = Join-Path $PSScriptRoot "auto-commit-readme.ps1"
-$Docs = @("README.md", "SCRIPTS.md")
+$Docs = @("README.md")
 $lastSeen = @{}
 $pending = $false
 $pendingAt = $null
 $debounceSec = 8
 
-Write-Host "Watching README.md and SCRIPTS.md in:"
+Write-Host "Watching README.md in:"
 Write-Host "  $RepoRoot"
 Write-Host "Auto-commit ~${debounceSec}s after save. Ctrl+C to stop."
 Write-Host ""

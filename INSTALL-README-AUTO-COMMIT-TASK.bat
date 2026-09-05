@@ -6,7 +6,7 @@ set "TASK=LocalHashFinder-README-AutoCommit"
 set "RUNNER=%~dp0scripts\run-auto-commit-readme.bat"
 
 echo Installing Windows scheduled task: %TASK%
-echo   Every 3 minutes — commit README.md / SCRIPTS.md if changed, then push
+echo   Every 3 minutes — commit README.md if changed, then push
 echo.
 
 schtasks /Query /TN "%TASK%" >nul 2>&1

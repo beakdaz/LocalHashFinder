@@ -1,4 +1,4 @@
-# Auto-commit README.md / SCRIPTS.md when they have unstaged or staged changes.
+# Auto-commit README.md when it has unstaged or staged changes.
 param(
     [switch]$Push,
     [string]$RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
@@ -7,7 +7,7 @@ param(
 $ErrorActionPreference = "Stop"
 Set-Location $RepoRoot
 
-$Docs = @("README.md", "SCRIPTS.md")
+$Doc = "README.md"
 $StateFile = Join-Path $PSScriptRoot ".readme-autocommit-state.json"
 $CooldownSec = 45
 
@@ -19,13 +19,8 @@ function Test-DocChanged([string]$Path) {
     return ($unstaged -or $staged)
 }
 
-$any = $false
-foreach ($doc in $Docs) {
-    if (Test-Path $doc) {
-        if (Test-DocChanged $doc) { $any = $true }
-    }
-}
-if (-not $any) { exit 0 }
+if (-not (Test-Path $Doc)) { exit 0 }
+if (-not (Test-DocChanged $Doc)) { exit 0 }
 
 if (Test-Path $StateFile) {
     try {
@@ -35,15 +30,13 @@ if (Test-Path $StateFile) {
     } catch { }
 }
 
-foreach ($doc in $Docs) {
-    if (Test-Path $doc) { git add -- $doc }
-}
+git add -- $Doc
 
 git diff --cached --quiet
 if ($LASTEXITCODE -eq 0) { exit 0 }
 
 $stamp = Get-Date -Format "yyyy-MM-dd HH:mm"
-$msg = "docs: auto-commit README/SCRIPTS ($stamp)"
+$msg = "docs: auto-commit README ($stamp)"
 git commit -m $msg
 if ($LASTEXITCODE -ne 0) { exit 1 }
 
