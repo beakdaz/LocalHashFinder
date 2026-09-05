@@ -554,9 +554,14 @@ LocalHashFinder/
 
 ![Local Hash Finder — вкладка «Расшифровка»](docs/screenshot-main.png)
 
+**Wordlist → MD5 (бенчмарк):** ~84,5 млн строк за **52,9 с** (~1,6 млн строк/с) на слабом ПК — `WORDLIST-HASH-FOLDER.bat`, авточисло потоков.
+
+![Wordlist MD5 — 84M строк за 53 сек](docs/benchmark-wordlist-md5.png)
+
 | Описание | Путь |
 | --- | --- |
 | Скриншот приложения | `docs/screenshot-main.png` |
+| Бенчмарк wordlist → MD5 | `docs/benchmark-wordlist-md5.png` |
 | Общий вид UI (макет) | `design/figma-reference.html` |
 | Вкладка «Расшифровка» (макет) | `design/figma-reference-lookup.html` |
 
@@ -1034,9 +1039,14 @@ CI: `.github/workflows/rust.yml` (`cargo check`, `cargo test` on Windows)
 
 ![Local Hash Finder — Hash Lookup tab](docs/screenshot-main.png)
 
+**Wordlist → MD5 (benchmark):** ~84.5M lines in **52.9 s** (~1.6M lines/s) on a low-end PC — `WORDLIST-HASH-FOLDER.bat`, auto thread count.
+
+![Wordlist MD5 — 84M lines in 53 sec](docs/benchmark-wordlist-md5.png)
+
 | Description | Path |
 | --- | --- |
 | App screenshot | `docs/screenshot-main.png` |
+| Wordlist → MD5 benchmark | `docs/benchmark-wordlist-md5.png` |
 | UI mockup | `design/figma-reference.html` |
 | Lookup tab mockup | `design/figma-reference-lookup.html` |
 
