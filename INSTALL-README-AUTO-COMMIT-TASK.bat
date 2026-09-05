@@ -3,7 +3,7 @@ chcp 65001 >nul
 cd /d "%~dp0"
 
 set "TASK=LocalHashFinder-README-AutoCommit"
-set "PS1=%~dp0scripts\auto-commit-readme.ps1"
+set "RUNNER=%~dp0scripts\run-auto-commit-readme.bat"
 
 echo Installing Windows scheduled task: %TASK%
 echo   Every 3 minutes — commit README.md / SCRIPTS.md if changed, then push
@@ -15,7 +15,7 @@ if not errorlevel 1 (
   schtasks /Delete /TN "%TASK%" /F >nul
 )
 
-schtasks /Create /TN "%TASK%" /TR "powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"%PS1%\" -Push" /SC MINUTE /MO 3 /F
+schtasks /Create /TN "%TASK%" /TR "\"%RUNNER%\"" /SC MINUTE /MO 3 /F
 if errorlevel 1 (
   echo FAILED. Run this bat as Administrator if access denied.
   pause
