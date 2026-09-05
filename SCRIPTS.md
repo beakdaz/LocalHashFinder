@@ -27,6 +27,8 @@
 
 ### A. Подготовка LMDB из wordlist-ов
 
+**Где взять plaintext wordlist-ы:** [HashMob](https://hashmob.net/), [Weakpass](https://weakpass.com/wordlist), [SecLists Passwords](https://github.com/danielmiessler/SecLists/tree/master/Passwords).
+
 ```
 BUILD.bat
     ↓

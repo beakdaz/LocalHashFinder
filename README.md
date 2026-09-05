@@ -12,6 +12,7 @@ Local Hash Finder — портативное Windows-приложение на R
 - [Интерфейс](#интерфейс)
 - [Требования](#требования)
 - [Быстрый старт](#быстрый-старт)
+- [Источники wordlist (plaintext)](#источники-wordlist-plaintext)
 - [База данных LMDB](#база-данных-lmdb)
 - [Конфигурация](#конфигурация)
 - [CLI и bat-скрипты](#cli-и-bat-скрипты)
@@ -151,6 +152,24 @@ START-LOCAL-HASH.bat
 2. `START-LOCAL-HASH.bat` — создаёт `data/` и `LocalHashFinder.cfg` при первом запуске, открывает GUI
 
 Исполняемый файл: `engine/target/release/LocalHashFinder.exe`
+
+---
+
+## Источники wordlist (plaintext)
+
+Публичные ресурсы для **plain-password** списков (используйте только в рамках закона и для своих систем):
+
+| Ресурс | Описание |
+|--------|----------|
+| [HashMob](https://hashmob.net/) | База и сообщество по hash lookup; wordlist-ы и материалы для исследований |
+| [Weakpass](https://weakpass.com/wordlist) | Большие публичные wordlist-ы (часть бесплатна) |
+| [SecLists — Passwords](https://github.com/danielmiessler/SecLists/tree/master/Passwords) | Классика: `rockyou.txt`, `10k-most-common.txt`, `best1050.txt` |
+
+**Цепочка в LocalHashFinder:**
+
+```
+скачать .txt → MERGE-CLEAN.bat (только пароли) → WORDLIST-HASH-FOLDER.bat → IMPORT-DB.bat
+```
 
 ---
 
@@ -338,6 +357,7 @@ Local Hash Finder is a portable Windows application written in Rust. All process
 - [User interface](#user-interface)
 - [Requirements](#requirements)
 - [Quick start](#quick-start)
+- [Wordlist sources (plaintext)](#wordlist-sources-plaintext)
 - [LMDB database](#lmdb-database)
 - [Configuration](#configuration)
 - [CLI and batch scripts](#cli-and-batch-scripts)
@@ -434,6 +454,24 @@ START-LOCAL-HASH.bat
 ```
 
 Binary: `engine/target/release/LocalHashFinder.exe`
+
+---
+
+## Wordlist sources (plaintext)
+
+Public resources for **plain-password** lists (use only legally and on systems you own):
+
+| Resource | Description |
+|----------|-------------|
+| [HashMob](https://hashmob.net/) | Hash lookup community; wordlists and research materials |
+| [Weakpass](https://weakpass.com/wordlist) | Large public wordlists (partially free) |
+| [SecLists — Passwords](https://github.com/danielmiessler/SecLists/tree/master/Passwords) | Classics: `rockyou.txt`, `10k-most-common.txt`, `best1050.txt` |
+
+**LocalHashFinder pipeline:**
+
+```
+download .txt → MERGE-CLEAN.bat (passwords only) → WORDLIST-HASH-FOLDER.bat → IMPORT-DB.bat
+```
 
 ---
 
