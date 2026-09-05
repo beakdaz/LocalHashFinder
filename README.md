@@ -338,7 +338,17 @@ LocalHashFinder/
 
 ---
 
+## Скриншоты
 
+![Local Hash Finder — вкладка «Расшифровка»](docs/screenshot-main.png)
+
+| Описание | Путь |
+|----------|------|
+| Скриншот приложения | `docs/screenshot-main.png` |
+| Общий вид UI (макет) | `design/figma-reference.html` |
+| Вкладка «Расшифровка» (макет) | `design/figma-reference-lookup.html` |
+
+Откройте HTML-файлы в браузере для просмотра дизайн-референса.
 
 ---
 
@@ -582,11 +592,15 @@ CI: `.github/workflows/rust.yml` (`cargo check`, `cargo test` on Windows)
 
 ## Screenshots
 
+![Local Hash Finder — Hash Lookup tab](docs/screenshot-main.png)
+
 | Description | Path |
 |-------------|------|
+| App screenshot | `docs/screenshot-main.png` |
 | UI mockup | `design/figma-reference.html` |
 | Lookup tab mockup | `design/figma-reference-lookup.html` |
-| App screenshot | `docs/screenshot-main.png` *(add before release)* |
+
+Open the HTML files in a browser to preview the design reference.
 
 ---
 
