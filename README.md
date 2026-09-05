@@ -127,7 +127,6 @@ Local Hash Finder — портативное Windows-приложение на R
 - **Crypto dashboard** — тёмная тема в стиле RecehTok (фиолетовый акцент, stat-tiles, нижняя панель управления)
 - **RU / EN** — переключение языка в шапке, строки в `engine/src/i18n.rs`
 - **Frameless window** — окно без системной рамки, собственные кнопки свернуть / закрыть, скруглённые углы (DWM на Windows)
-- **LEAKBASE** — ссылка на [leakbase.su](https://leakbase.su) в боковой панели
 - Вкладки: Расшифровка · Склейка · SQL Extract · SQL Колонки · Custom Regex · ComboKit · ULP
 - Лог, результаты, инструкции на каждой вкладке
 
@@ -304,17 +303,7 @@ LocalHashFinder/
 
 ---
 
-## Скриншоты
 
-> Добавьте скриншоты перед публикацией на GitHub (в репозиторий или Releases).
-
-| Описание | Путь |
-|----------|------|
-| Общий вид UI (макет) | `design/figma-reference.html` |
-| Вкладка «Расшифровка» (макет) | `design/figma-reference-lookup.html` |
-| Скриншот приложения | `docs/screenshot-main.png` *(добавить)* |
-
-Откройте HTML-файлы в браузере для просмотра дизайн-референса.
 
 ---
 
@@ -425,7 +414,6 @@ Supports `.zip` / `.7z` / `.rar` archives and folders.
 - Crypto-dashboard dark theme (RecehTok-inspired)
 - **RU / EN** language toggle
 - **Frameless** custom window chrome (rounded corners on Windows)
-- **LEAKBASE** link in sidebar → [leakbase.su](https://leakbase.su)
 - Per-tab log, results panel, and instructions
 
 ---
