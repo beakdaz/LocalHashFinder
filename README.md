@@ -20,6 +20,7 @@ Local Hash Finder — портативное Windows-приложение на R
 - [Структура проекта](#структура-проекта)
 - [Технологии](#технологии)
 - [Скриншоты](#скриншоты)
+- [Сообщить об ошибке](#сообщить-об-ошибке)
 - [Отказ от ответственности](#отказ-от-ответственности)
 - [Лицензия](#лицензия)
 - [English](#english)
@@ -352,6 +353,18 @@ LocalHashFinder/
 
 ---
 
+## Сообщить об ошибке
+
+Если что-то **не работает** или появляется ошибка:
+
+1. Откройте [GitHub Issues](https://github.com/beakdaz/LocalHashFinder/issues/new/choose) → **Bug Report**
+2. Укажите шаги, вкладку/скрипт и **текст ошибки** (можно `LHF_ERR:...`)
+3. **Не прикладывайте** реальные combo, пароли или wordlist-ы
+
+Сообщения разбираются и исправления выкладываются в `main`.
+
+---
+
 ## Отказ от ответственности
 
 Local Hash Finder — **офлайн-инструмент** для работы с **вашими собственными данными** на вашем компьютере.
@@ -391,6 +404,7 @@ Local Hash Finder is a portable Windows application written in Rust. All process
 - [Project structure](#project-structure)
 - [Tech stack](#tech-stack)
 - [Screenshots](#screenshots-en)
+- [Report a bug](#report-a-bug)
 - [Disclaimer](#disclaimer)
 - [License](#license-en)
 
@@ -601,6 +615,18 @@ CI: `.github/workflows/rust.yml` (`cargo check`, `cargo test` on Windows)
 | Lookup tab mockup | `design/figma-reference-lookup.html` |
 
 Open the HTML files in a browser to preview the design reference.
+
+---
+
+## Report a bug
+
+If something **does not work** or shows an error:
+
+1. Open [GitHub Issues](https://github.com/beakdaz/LocalHashFinder/issues/new/choose) → **Bug Report**
+2. Include steps, tab/script name, and the **exact error text** (`LHF_ERR:...` if present)
+3. **Do not attach** real combos, passwords, or wordlists
+
+Reports are triaged and fixes land on `main`.
 
 ---
 

@@ -1,0 +1,82 @@
+name: Bug Report
+description: Something does not work or shows an error
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please do **not** attach real combo lists, passwords, or private dumps.
+        Describe steps and paste **error text** or log lines only.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Hash Lookup (LMDB)
+        - Import / Append DB
+        - Wordlist → hash (WORDLIST-HASH)
+        - Merge / TextMerger (MERGE-CLEAN)
+        - ComboKit
+        - ULP
+        - SQL Extract / Columns
+        - Custom Regex
+        - GUI / window / theme
+        - Build (BUILD.bat / cargo)
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: LocalHashFinder version or commit
+      placeholder: e.g. main @ abc1234, or v1.0
+    validations:
+      required: false
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. BUILD.bat
+        2. IMPORT-DB.bat "..."
+        3. START-LOCAL-HASH.bat → tab ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior / error message
+      description: Paste exact error text, `LHF_ERR:...`, or log output
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: Windows version
+      placeholder: e.g. Windows 11 23H2
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I searched existing Issues for duplicates
+          required: true
+        - label: I did not attach private data (passwords, dumps, wordlists)
+          required: true

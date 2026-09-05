@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Discussions / questions
+    url: https://github.com/beakdaz/LocalHashFinder/discussions
+    about: Usage questions (no private dumps in posts)

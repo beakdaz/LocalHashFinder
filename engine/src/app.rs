@@ -1023,6 +1023,8 @@ fn sidebar_link_color_image() -> Option<egui::ColorImage> {
     png_color_image(include_bytes!("../assets/sidebar-link.png"))
 }
 
+const LEAKBASE_FORUM_URL: &str = "https://leakbase.su";
+
 fn leakbase_logo_color_image() -> Option<egui::ColorImage> {
     png_color_image(include_bytes!("../assets/leakbase-logo.png"))
 }
@@ -1308,32 +1310,57 @@ impl App {
         }
     }
 
-    fn ui_leakbase_logo(&mut self, ui: &mut egui::Ui) {
+    fn ui_leakbase_sponsor(&mut self, ui: &mut egui::Ui) {
         let Some(texture) = self.leakbase_logo_texture.as_ref() else {
             return;
         };
-        const LOGO_H: f32 = 30.0;
+        let t = self.tr();
+        const LOGO_H: f32 = 28.0;
         let size = texture.size_vec2();
         let aspect = if size.y > 0.0 { size.x / size.y } else { 1.0 };
         let logo_size = egui::vec2(LOGO_H * aspect, LOGO_H);
 
-        ui.add_space(10.0);
-        let (rect, response) = ui.allocate_exact_size(logo_size, egui::Sense::click());
+        let sponsor_w = ui
+            .fonts(|f| {
+                f.layout_no_wrap(
+                    t.sponsor_label.to_owned(),
+                    egui::FontId::proportional(11.0),
+                    harmony::MUTED,
+                )
+                .size()
+                .x
+            })
+            .max(0.0);
+        let total_size = egui::vec2(sponsor_w + 6.0 + logo_size.x, logo_size.y.max(14.0));
+        let (rect, response) = ui.allocate_exact_size(total_size, egui::Sense::click());
+
         if ui.is_rect_visible(rect) {
+            let cy = rect.center().y;
+            ui.painter().text(
+                egui::pos2(rect.left(), cy),
+                egui::Align2::LEFT_CENTER,
+                t.sponsor_label,
+                egui::FontId::proportional(11.0),
+                harmony::MUTED,
+            );
+            let logo_rect = egui::Rect::from_min_size(
+                egui::pos2(rect.left() + sponsor_w + 6.0, rect.top() + (rect.height() - logo_size.y) * 0.5),
+                logo_size,
+            );
             ui.painter().image(
                 texture.id(),
-                rect,
+                logo_rect,
                 egui::Rect::from_min_max(egui::pos2(0.0, 0.0), egui::pos2(1.0, 1.0)),
                 egui::Color32::WHITE,
             );
         }
         if response.clicked() {
-            open_external_url("https://leakbase.su");
+            open_external_url(LEAKBASE_FORUM_URL);
         }
         if response.hovered() {
             ui.ctx().set_cursor_icon(egui::CursorIcon::PointingHand);
         }
-        response.on_hover_text("LEAKBASE Official Forum");
+        response.on_hover_text(t.sponsor_forum_tip);
     }
 
     fn tr(&self) -> &'static i18n::I18n {
@@ -2268,6 +2295,7 @@ impl App {
             ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
                 ui.spacing_mut().item_spacing.x = 10.0;
                 harmony::window_controls(&ctx, ui);
+                self.ui_leakbase_sponsor(ui);
                 self.ui_lang_controls(ui);
                 let t = self.tr();
                 let path = self.lmdb_path_display();
@@ -2275,7 +2303,6 @@ impl App {
                 harmony::vsep(ui);
                 let (label, color) = self.status_badge();
                 harmony::status_pill(ui, label, color);
-                self.ui_leakbase_logo(ui);
             });
         });
     }
