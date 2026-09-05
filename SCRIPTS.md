@@ -27,6 +27,8 @@
 
 ### A. Подготовка LMDB из wordlist-ов
 
+> Готовый `hashdb.lmdb` в **GitHub Releases пока нет** — только локальная сборка через цепочку ниже. Релиз с базой будет позже.
+
 **Где взять plaintext wordlist-ы:** [HashMob](https://hashmob.net/), [Weakpass](https://weakpass.com/wordlist), [g0tmi1k wordlists](https://download.g0tmi1k.com/wordlists), [SecLists Passwords](https://github.com/danielmiessler/SecLists/tree/master/Passwords).
 
 **Крупные дампы (Mail.ru):** [260M](https://cloud.mail.ru/public/HsHb/JamxkSKRF) · [243M](https://cloud.mail.ru/public/hEUf/XJkHjc6Ny) · [358M](https://cloud.mail.ru/public/EnHr/Qx1hYDDrC) · [112M](https://cloud.mail.ru/public/K6Ho/HCcQFxHNH) · [950M](https://cloud.mail.ru/public/eo1N/SYYp5gELP) · [999M+](https://cloud.mail.ru/public/Coni/QgPayRbhv)

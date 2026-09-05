@@ -14,6 +14,7 @@ Local Hash Finder — портативное Windows-приложение на R
 - [Быстрый старт](#быстрый-старт)
 - [Источники wordlist (plaintext)](#источники-wordlist-plaintext)
 - [База данных LMDB](#база-данных-lmdb)
+- [Сборка базы с нуля](#сборка-базы-с-нуля)
 - [Конфигурация](#конфигурация)
 - [CLI и bat-скрипты](#cli-и-bat-скрипты)
 - [SCRIPTS.md — полный справочник bat-скриптов](SCRIPTS.md)
@@ -192,6 +193,8 @@ START-LOCAL-HASH.bat
 
 ## База данных LMDB
 
+> **Готовая база в GitHub Releases пока не выложена** — файл `hashdb.lmdb` в репозиторий не входит. Сейчас базу нужно **собрать локально**: wordlist → `MERGE-CLEAN.bat` → `WORDLIST-HASH-FOLDER.bat` → `IMPORT-DB.bat` (см. [источники wordlist](#источники-wordlist-plaintext)). Релиз с предсобранной LMDB появится позже.
+
 Путь по умолчанию: `engine/target/release/data/hashdb.lmdb`
 
 | Действие | Способ |
@@ -205,6 +208,117 @@ START-LOCAL-HASH.bat
 `map_gb` — размер map LMDB в GB (по умолчанию 280; для ~200 GB исходника). Импорт больших файлов может занять много часов — не закрывайте окно.
 
 Перед import/append **закройте** GUI (LMDB не поддерживает одновременную запись из двух процессов).
+
+---
+
+## Сборка базы с нуля
+
+Пошаговая инструкция: как самим собрать и пополнять `hashdb.lmdb`. Подробности по каждому `.bat` — в [SCRIPTS.md](SCRIPTS.md).
+
+### Что нужно
+
+| | |
+|---|---|
+| **ОС** | Windows 10 / 11 |
+| **Сборка** | `BUILD.bat` (Rust stable) |
+| **Диск** | Место под raw wordlist + clean + `*_md5.txt` + LMDB (для сотен млн строк — десятки–сотни GB) |
+| **Время** | Import больших файлов — часы и больше |
+
+### Два сценария
+
+| Сценарий | Вход | Что делать |
+|----------|------|------------|
+| **A — с wordlist** | `.txt` с plain-password (один пароль на строку) | Шаги 1–5 ниже |
+| **B — уже есть hash:pass** | Файл `32hex:pass` или `40hex:pass` | Сразу `IMPORT-DB.bat` (шаг 4), без MERGE/WORDLIST-HASH |
+
+### Шаг 1. Скачать wordlist-ы
+
+Нужны **plaintext**-списки (без `login:pass`). Источники — в разделе [Источники wordlist](#источники-wordlist-plaintext): SecLists (`rockyou.txt` — хороший старт), Weakpass, g0tmi1k, HashMob, дампы Mail.ru.
+
+Сложите файлы, например, в `D:\wordlists\raw\`. Используйте только законно и для своих систем.
+
+### Шаг 2. Очистка → только пароли
+
+```bat
+MERGE-CLEAN.bat "D:\wordlists\raw" "D:\wordlists\merged_clean.txt" recursive
+```
+
+Оставляет plain passwords; удаляет строки с `:`, hash:pass, email:pass, чистый hex, строки короче 3 символов.
+
+### Шаг 3. Пароли → MD5 hash:pass
+
+Папка с `.txt`:
+
+```bat
+WORDLIST-HASH-FOLDER.bat "D:\wordlists" md5 32
+```
+
+Один файл:
+
+```bat
+WORDLIST-HASH.bat "D:\wordlists\merged_clean.txt"
+```
+
+На выходе: `{random}_{имя}_md5.txt`, формат `hash:password`. Обработка потоковая (без OOM).
+
+### Шаг 4. Импорт в LMDB
+
+**GUI должен быть закрыт.**
+
+```bat
+IMPORT-DB.bat "D:\wordlists\847291_merged_clean_md5.txt" 4
+```
+
+| Аргумент | Описание |
+|----------|----------|
+| 1-й | Путь к `hash:pass` |
+| 2-й | `map_gb` — размер map LMDB (малый тест: `4`; сотни GB данных: `280`+) |
+
+Результат: `engine\target\release\data\hashdb.lmdb`
+
+### Шаг 5. Расшифровка
+
+```bat
+START-LOCAL-HASH.bat
+```
+
+Вкладка **«Расшифровка»** → файл `email:hash` / `hash` → **Старт**.
+
+### Пополнение базы (append)
+
+Новый `hash:pass` → **закрыть GUI** →:
+
+```bat
+APPEND-DB.bat "D:\new_hashes.txt" 280
+```
+
+Или **Расшифровка** → Append в GUI (без параллельного import из bat).
+
+### Схема
+
+```
+скачать .txt → MERGE-CLEAN.bat → WORDLIST-HASH-FOLDER.bat → IMPORT-DB.bat → START-LOCAL-HASH.bat
+                                                              ↑
+                    пополнение: APPEND-DB.bat (новый hash:pass)
+```
+
+### Быстрый тест (rockyou)
+
+```bat
+BUILD.bat
+REM скачать rockyou.txt в wordlists\
+MERGE-CLEAN.bat "wordlists" "wordlists\clean.txt"
+WORDLIST-HASH.bat "wordlists\clean.txt"
+IMPORT-DB.bat "wordlists\*_md5.txt" 4
+START-LOCAL-HASH.bat
+```
+
+### Заметки
+
+- **Combo** (`email:hash`) в базу не импортируют — их **lookup**-ят по уже собранной LMDB.
+- **SQL-дампы** → `EXTRACT-SQL.bat` → lookup, не wordlist-пайплайн.
+- Если import падает по map size — увеличьте `map_gb`.
+- На каждом этапе нужно место на диске под промежуточные файлы.
 
 ---
 
@@ -398,6 +512,7 @@ Local Hash Finder is a portable Windows application written in Rust. All process
 - [Quick start](#quick-start)
 - [Wordlist sources (plaintext)](#wordlist-sources-plaintext)
 - [LMDB database](#lmdb-database)
+- [Building the database from scratch](#building-the-database-from-scratch)
 - [Configuration](#configuration)
 - [CLI and batch scripts](#cli-and-batch-scripts)
 - [SCRIPTS.md — full batch script reference](SCRIPTS.md)
@@ -533,6 +648,8 @@ download .txt → MERGE-CLEAN.bat (passwords only) → WORDLIST-HASH-FOLDER.bat 
 
 ## LMDB database
 
+> **Pre-built `hashdb.lmdb` is not published on GitHub Releases yet** — the database is not shipped with the repo. For now, **build it locally**: wordlist → `MERGE-CLEAN.bat` → `WORDLIST-HASH-FOLDER.bat` → `IMPORT-DB.bat` (see [wordlist sources](#wordlist-sources-plaintext)). A release with a packaged LMDB is planned for later.
+
 Default path: `engine/target/release/data/hashdb.lmdb`
 
 - **Import:** `IMPORT-DB.bat "D:\hash_pass.txt" [map_gb]`
@@ -541,6 +658,117 @@ Default path: `engine/target/release/data/hashdb.lmdb`
 - Wordlist → `hash:pass` (MD5 by default): `WORDLIST-HASH.bat "passwords.txt"` (single file) or `WORDLIST-HASH-FOLDER.bat "D:\wordlists"` (all top-level `*.txt`; default folder `wordlists\`). Output: `{random}_{stem}_md5.txt` (e.g. `847291_passwords_md5.txt`). Optional 2nd arg: `sha1` or `both`.
 
 Close the GUI before import/append operations.
+
+---
+
+## Building the database from scratch
+
+Step-by-step guide to build and extend `hashdb.lmdb`. Per-script details: [SCRIPTS.md](SCRIPTS.md).
+
+### Requirements
+
+| | |
+|---|---|
+| **OS** | Windows 10 / 11 |
+| **Build** | `BUILD.bat` (Rust stable) |
+| **Disk** | Space for raw wordlists + clean + `*_md5.txt` + LMDB |
+| **Time** | Large imports can take many hours |
+
+### Two scenarios
+
+| Scenario | Input | Action |
+|----------|-------|--------|
+| **A — from wordlists** | Plain-password `.txt` (one password per line) | Steps 1–5 below |
+| **B — hash:pass ready** | `32hex:pass` or `40hex:pass` file | Skip to `IMPORT-DB.bat` (step 4) |
+
+### Step 1. Download wordlists
+
+Plain-text lists only (no `login:pass`). Sources: [Wordlist sources](#wordlist-sources-plaintext) — SecLists (`rockyou.txt` for a quick start), Weakpass, g0tmi1k, HashMob, Mail.ru dumps.
+
+Example folder: `D:\wordlists\raw\`. Use legally on systems you own.
+
+### Step 2. Clean merge → passwords only
+
+```bat
+MERGE-CLEAN.bat "D:\wordlists\raw" "D:\wordlists\merged_clean.txt" recursive
+```
+
+Keeps plain passwords; drops lines with `:`, hash:pass, email:pass, pure hex, lines shorter than 3 chars.
+
+### Step 3. Passwords → MD5 hash:pass
+
+Folder:
+
+```bat
+WORDLIST-HASH-FOLDER.bat "D:\wordlists" md5 32
+```
+
+Single file:
+
+```bat
+WORDLIST-HASH.bat "D:\wordlists\merged_clean.txt"
+```
+
+Output: `{random}_{name}_md5.txt` with `hash:password` lines. Streaming (no OOM).
+
+### Step 4. Import into LMDB
+
+**Close the GUI first.**
+
+```bat
+IMPORT-DB.bat "D:\wordlists\847291_merged_clean_md5.txt" 4
+```
+
+| Arg | Description |
+|-----|-------------|
+| 1st | Path to `hash:pass` file |
+| 2nd | `map_gb` — LMDB map size (small test: `4`; hundreds of GB: `280`+) |
+
+Result: `engine\target\release\data\hashdb.lmdb`
+
+### Step 5. Lookup
+
+```bat
+START-LOCAL-HASH.bat
+```
+
+**Hash Lookup** tab → `email:hash` / `hash` file → **Start**.
+
+### Appending to the database
+
+New `hash:pass` → **close GUI** →:
+
+```bat
+APPEND-DB.bat "D:\new_hashes.txt" 280
+```
+
+Or use **Append** in the Lookup tab (do not run bat import in parallel).
+
+### Pipeline
+
+```
+download .txt → MERGE-CLEAN.bat → WORDLIST-HASH-FOLDER.bat → IMPORT-DB.bat → START-LOCAL-HASH.bat
+                                                              ↑
+                         append: APPEND-DB.bat (new hash:pass)
+```
+
+### Quick test (rockyou)
+
+```bat
+BUILD.bat
+REM download rockyou.txt into wordlists\
+MERGE-CLEAN.bat "wordlists" "wordlists\clean.txt"
+WORDLIST-HASH.bat "wordlists\clean.txt"
+IMPORT-DB.bat "wordlists\*_md5.txt" 4
+START-LOCAL-HASH.bat
+```
+
+### Notes
+
+- **Combo** files (`email:hash`) are looked up against LMDB, not imported as wordlists.
+- **SQL dumps** → `EXTRACT-SQL.bat` → lookup, not the wordlist pipeline.
+- Increase `map_gb` if import fails on map size.
+- Plan disk space for intermediate files at each stage.
 
 ---
 
