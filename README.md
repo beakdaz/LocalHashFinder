@@ -1,91 +1,123 @@
-# Local Hash Finder
+[![HashFinder by LeakBase — Official Forum](docs/readme-banner.png)](https://leakbase.su)
+
+# HashFinder / HashPars / Reg /CleanRows
 
 **Офлайн desktop-набор для расшифровки хешей, обработки combo-листов и ULP-инструментов.**
 
-Local Hash Finder — портативное Windows-приложение на Rust. Все операции выполняются локально: без облака, без лицензий и без отправки данных на сервер. Вы сами выбираете LMDB-базу хешей и свои входные файлы.
+> Local Hash Finder — портативное Windows-приложение на Rust. Все операции выполняются локально: без облака, без лицензий и без отправки данных на сервер. Вы сами выбираете LMDB-базу хешей и свои входные файлы.
 
 ---
 
-## Содержание
+# **✳️ Содержание**
 
-- [Возможности](#возможности)
-- [Интерфейс](#интерфейс)
-- [Требования](#требования)
-- [Быстрый старт](#быстрый-старт)
-- [Источники wordlist (plaintext)](#источники-wordlist-plaintext)
-- [База данных LMDB](#база-данных-lmdb)
-- [Сборка базы с нуля](#сборка-базы-с-нуля)
-- [Конфигурация](#конфигурация)
-- [CLI и bat-скрипты](#cli-и-bat-скрипты)
-- [SCRIPTS.md — полный справочник bat-скриптов](SCRIPTS.md)
-- [Структура проекта](#структура-проекта)
-- [Технологии](#технологии)
-- [Скриншоты](#скриншоты)
-- [Сообщить об ошибке](#сообщить-об-ошибке)
-- [Отказ от ответственности](#отказ-от-ответственности)
-- [Лицензия](#лицензия)
-- [English](#english)
+ 1. [Возможности](#%D0%B2%D0%BE%D0%B7%D0%BC%D0%BE%D0%B6%D0%BD%D0%BE%D1%81%D1%82%D0%B8)
+ 2. [Интерфейс](#%D0%B8%D0%BD%D1%82%D0%B5%D1%80%D1%84%D0%B5%D0%B9%D1%81)
+ 3. [Требования](#%D1%82%D1%80%D0%B5%D0%B1%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F)
+ 4. [Быстрый старт](#%D0%B1%D1%8B%D1%81%D1%82%D1%80%D1%8B%D0%B9-%D1%81%D1%82%D0%B0%D1%80%D1%82)
+ 5. [Источники wordlist (plaintext)](#%D0%B8%D1%81%D1%82%D0%BE%D1%87%D0%BD%D0%B8%D0%BA%D0%B8-wordlist-plaintext)
+ 6. [База данных LMDB](#%D0%B1%D0%B0%D0%B7%D0%B0-%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85-lmdb)
+ 7. [Сборка базы с нуля](#%D1%81%D0%B1%D0%BE%D1%80%D0%BA%D0%B0-%D0%B1%D0%B0%D0%B7%D1%8B-%D1%81-%D0%BD%D1%83%D0%BB%D1%8F)
+ 8. [Конфигурация](#%D0%BA%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D1%8F)
+ 9. [CLI и bat-скрипты](#cli-%D0%B8-bat-%D1%81%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D1%8B)
+10. [SCRIPTS.md — полный справочник bat-скриптов](SCRIPTS.md)
+11. [Структура проекта](#%D1%81%D1%82%D1%80%D1%83%D0%BA%D1%82%D1%83%D1%80%D0%B0-%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%D0%B0)
+12. [Технологии](#%D1%82%D0%B5%D1%85%D0%BD%D0%BE%D0%BB%D0%BE%D0%B3%D0%B8%D0%B8)
+13. [Скриншоты](#%D1%81%D0%BA%D1%80%D0%B8%D0%BD%D1%88%D0%BE%D1%82%D1%8B)
+14. [Сообщить об ошибке](#%D1%81%D0%BE%D0%BE%D0%B1%D1%89%D0%B8%D1%82%D1%8C-%D0%BE%D0%B1-%D0%BE%D1%88%D0%B8%D0%B1%D0%BA%D0%B5)
+15. [Отказ от ответственности](#%D0%BE%D1%82%D0%BA%D0%B0%D0%B7-%D0%BE%D1%82-%D0%BE%D1%82%D0%B2%D0%B5%D1%82%D1%81%D1%82%D0%B2%D0%B5%D0%BD%D0%BD%D0%BE%D1%81%D1%82%D0%B8)
+16. [Лицензия](#%D0%BB%D0%B8%D1%86%D0%B5%D0%BD%D0%B7%D0%B8%D1%8F)
+17. [English](#english)
 
 ---
 
-## Возможности
+<details>
+<summary>✳️Возможности</summary>
+
 
 Приложение состоит из **7 модулей** (вкладок в боковой панели):
 
-### 1. Расшифровка (Hash Lookup)
+<details>
+<summary>1. Hash Lookup</summary>
 
 Пакетный поиск паролей по MD5/SHA1 в локальной LMDB-базе.
 
-- Открытие и выбор пути к `hashdb.lmdb`
-- Пакетная обработка файлов (`email:hash`, `hash`, `email:hash:extra`)
-- Настраиваемое число потоков (до 512)
-- Выход: `{name}_good.txt`, `{name}_nohash.txt`, `{name}_bad.txt`, `{name}_trash.txt`
-- **Import** — первичная загрузка `hash:pass` в LMDB (CLI / `IMPORT-DB.bat`)
-- **Append** — дополнение существующей базы без перезаписи дубликатов (GUI / `APPEND-DB.bat`)
-- Пауза, стоп, просмотр результатов в проводнике
+```
+Открытие и выбор пути к hashdb.lmdb
+Пакетная обработка файлов (email:hash, hash, email:hash:extra)
+Настраиваемое число потоков (до 512)
+Выход: {name}_good.txt, {name}_nohash.txt, {name}_bad.txt, {name}_trash.txt
+Import — первичная загрузка hash:pass в LMDB (CLI / IMPORT-DB.bat)
+Append — дополнение существующей базы без перезаписи дубликатов (GUI / APPEND-DB.bat)
+Пауза, стоп, просмотр результатов в проводнике
+```
 
-### 2. Склейка (Merge)
+</details>
 
-Объединение `mail:hashedpass` и `hash:plainpass` → `mail:plainpass`.
+<details>
+<summary>2. Merge</summary>
 
-- Вход: список `email:hash` + файл расшифровки (`_good.txt` или `hash:pass`)
-- Выход: `{stem}_plain.txt`, `{stem}_plain_nohash.txt`, `{stem}_trash.txt`
-- CLI: `merge --mail … --dehash …` / `MERGE.bat`
+> Объединение `mail:hashedpass` и `hash:plainpass` → `mail:plainpass`.
 
-### 3. SQL Extract
+```
+Вход: список email:hash + файл расшифровки (_good.txt или hash:pass)
+Выход: {stem}_plain.txt, {stem}_plain_nohash.txt, {stem}_trash.txt
+CLI: merge --mail … --dehash … / MERGE.bat
+```
 
-Извлечение `email:md5` / `email:sha1` из SQL-дампов через regex.
+</details>
 
-- Один файл или папка (`.sql`, `.txt`, `.dump`)
-- Параллельная обработка (до 5 потоков)
-- UTF-8 и Windows-1252, поддержка BOM
-- Выход: `{stem}_emails.txt`, `{stem}_trash.txt`
-- CLI: `extract-sql` / `EXTRACT-SQL.bat`
+<details>
+<summary>3. SQL Extract</summary>
 
-### 4. SQL Колонки (SQL Columns)
+> Извлечение `email:md5` / `email:sha1` из SQL-дампов через regex.
 
-Извлечение `login:password` по именам колонок в `CREATE TABLE` / `INSERT`.
+```
+Один файл или папка (.sql, .txt, .dump)
+Параллельная обработка (до 5 потоков)
+UTF-8 и Windows-1252, поддержка BOM
+Выход: {stem}_emails.txt, {stem}_trash.txt
+CLI: extract-sql / EXTRACT-SQL.bat
+```
 
-- Распознавание колонок login/email/user и password/pass/pwd
-- Несколько кортежей в одной строке INSERT
-- Пакетная обработка папки с дампами
-- Выход: `{stem}_loginpass.txt`
-- CLI: `extract-sql-columns`
+</details>
 
-### 5. Custom Regex
+<details>
+<summary>4. SQL Columns</summary>
 
-Произвольное извлечение по regex с шаблоном вывода (`$1`, `$2`, `${name}`).
+> Извлечение `login:password` по именам колонок в `CREATE TABLE` / `INSERT`.
 
-- Пресеты: `email:md5`, `email:sha1`, `hash:pass`, email only
-- Флаги: case-insensitive, multiline, dotall, dedupe
-- CLI: `extract-regex --pattern … --template …`
+```
+Распознавание колонок login/email/user и password/pass/pwd
+Несколько кортежей в одной строке INSERT
+Пакетная обработка папки с дампами
+Выход: {stem}_loginpass.txt
+CLI: extract-sql-columns
+```
 
-### 6. ComboKit
+</details>
 
+<details>
+<summary>5. Custom Regex</summary>
+
+> Произвольное извлечение по regex с шаблоном вывода (`$1`, `$2`, `${name}`).
+
+```
+Пресеты: email:md5, email:sha1, hash:pass, email only
+Флаги: case-insensitive, multiline, dotall, dedupe
+CLI: extract-regex --pattern … --template …
+```
+
+</details>
+
+<details>
+<summary>6. ComboKit</summary>
+
+```
 11 инструментов для combo-листов (без LMDB):
+```
 
 | Инструмент | Описание |
-|------------|----------|
+| --- | --- |
 | **Compare** | Сравнение двух списков → `only_a`, `only_b`, `both` |
 | **Combo filter** | Валидация `email:pass`, отсев мусора |
 | **Email filter** | Только строки с email |
@@ -98,12 +130,15 @@ Local Hash Finder — портативное Windows-приложение на R
 | **Merge** | Склейка строк в один файл |
 | **Split** | Разбиение файла по N строк |
 
-### 7. ULP / SwiftyULP
+</details>
+
+<details>
+<summary>7. ULP</summary>
 
 18 сервисов для обработки `url:login:pass` (архивы `.zip` / `.7z` / `.rar` и папки):
 
 | Сервис | Описание |
-|--------|----------|
+| --- | --- |
 | **Sort** | Сортировка по типам (Mails, Mail Pass, Phone Pass, User Pass, ULP) |
 | **Sort Country** | Сортировка по TLD → `by_tld/`, `by_domain/` |
 | **Sort Keyword** | Разложение по keyword в отдельные файлы |
@@ -123,27 +158,48 @@ Local Hash Finder — портативное Windows-приложение на R
 | **Misc — split** | Split по числу строк |
 | **Misc — filter** | Фильтр по keyword |
 
----
+</details>
 
-## Интерфейс
-
-- **Crypto dashboard** — тёмная тема в стиле RecehTok (фиолетовый акцент, stat-tiles, нижняя панель управления)
-- **RU / EN** — переключение языка в шапке, строки в `engine/src/i18n.rs`
-- **Frameless window** — окно без системной рамки, собственные кнопки свернуть / закрыть, скруглённые углы (DWM на Windows)
-- Вкладки: Расшифровка · Склейка · SQL Extract · SQL Колонки · Custom Regex · ComboKit · ULP
-- Лог, результаты, инструкции на каждой вкладке
+</details>
 
 ---
 
-## Требования
 
-- **Windows 10 / 11** (основная платформа; сборка заточена под Windows)
-- Для **сборки из исходников**: [Rust](https://rustup.rs) (stable), `cargo`
-- Достаточно места на диске под LMDB (для больших баз — сотни GB map size)
+<details>
+<summary>Интерфейс</summary>
+
+
+```
+Crypto dashboard — тёмная тема в стиле RecehTok (фиолетовый акцент, stat-tiles, нижняя панель управления)
+RU / EN — переключение языка в шапке, строки в engine/src/i18n.rs
+Frameless window — окно без системной рамки, собственные кнопки свернуть / закрыть, скруглённые углы (DWM на Windows)
+Вкладки: Расшифровка · Склейка · SQL Extract · SQL Колонки · Custom Regex · ComboKit · ULP
+Лог, результаты, инструкции на каждой вкладке
+```
+
+</details>
 
 ---
 
-## Быстрый старт
+
+<details>
+<summary>Требования</summary>
+
+
+```
+Windows 10 / 11 (основная платформа; сборка заточена под Windows)
+Для сборки из исходников: Rust (stable), cargo
+Достаточно места на диске под LMDB (для больших баз — сотни GB map size)
+```
+
+</details>
+
+---
+
+
+<details>
+<summary>Быстрый старт</summary>
+
 
 ```bat
 BUILD.bat
@@ -155,16 +211,21 @@ START-LOCAL-HASH.bat
 
 Исполняемый файл: `engine/target/release/LocalHashFinder.exe`
 
+</details>
+
 ---
 
-## Источники wordlist (plaintext)
+
+<details>
+<summary>Источники wordlist (plaintext)</summary>
+
 
 Публичные ресурсы для **plain-password** списков (используйте только в рамках закона и для своих систем):
 
 **Каталоги и сайты**
 
 | Ресурс | Описание |
-|--------|----------|
+| --- | --- |
 | [HashMob](https://hashmob.net/) | База и сообщество по hash lookup; wordlist-ы и материалы для исследований |
 | [Weakpass](https://weakpass.com/wordlist) | Большие публичные wordlist-ы (часть бесплатна) |
 | [g0tmi1k — wordlists](https://download.g0tmi1k.com/wordlists) | Каталог wordlist-ов для pentest и аудита |
@@ -173,12 +234,12 @@ START-LOCAL-HASH.bat
 **Крупные plaintext-дампы (Mail.ru Cloud, .txt)**
 
 | Ссылка | Размер |
-|--------|--------|
-| [260M passwords](https://cloud.mail.ru/public/HsHb/JamxkSKRF) | ~260 млн |
-| [243M passwords](https://cloud.mail.ru/public/hEUf/XJkHjc6Ny) | ~243 млн |
-| [358M passwords](https://cloud.mail.ru/public/EnHr/Qx1hYDDrC) | ~358 млн |
-| [112M passwords](https://cloud.mail.ru/public/K6Ho/HCcQFxHNH) | ~112 млн |
-| [950M passwords](https://cloud.mail.ru/public/eo1N/SYYp5gELP) | ~950 млн |
+| --- | --- |
+| [260M passwords](https://cloud.mail.ru/public/HsHb/JamxkSKRF) | \~260 млн |
+| [243M passwords](https://cloud.mail.ru/public/hEUf/XJkHjc6Ny) | \~243 млн |
+| [358M passwords](https://cloud.mail.ru/public/EnHr/Qx1hYDDrC) | \~358 млн |
+| [112M passwords](https://cloud.mail.ru/public/K6Ho/HCcQFxHNH) | \~112 млн |
+| [950M passwords](https://cloud.mail.ru/public/eo1N/SYYp5gELP) | \~950 млн |
 | [999M+ passwords](https://cloud.mail.ru/public/Coni/QgPayRbhv) | 999+ млн |
 
 Для файлов на сотни миллионов строк закладывайте место на диске; перед хешированием прогоните через `MERGE-CLEAN.bat`.
@@ -189,36 +250,46 @@ START-LOCAL-HASH.bat
 скачать .txt → MERGE-CLEAN.bat (только пароли) → WORDLIST-HASH-FOLDER.bat → IMPORT-DB.bat
 ```
 
+</details>
+
 ---
 
-## База данных LMDB
 
-> **Готовая база в GitHub Releases пока не выложена** — файл `hashdb.lmdb` в репозиторий не входит. Сейчас базу нужно **собрать локально**: wordlist → `MERGE-CLEAN.bat` → `WORDLIST-HASH-FOLDER.bat` → `IMPORT-DB.bat` (см. [источники wordlist](#источники-wordlist-plaintext)). Релиз с предсобранной LMDB появится позже.
+<details>
+<summary>База данных LMDB</summary>
+
+
+> **Готовая база в GitHub Releases пока не выложена** — файл `hashdb.lmdb` в репозиторий не входит. Сейчас базу нужно **собрать локально**: wordlist → `MERGE-CLEAN.bat` → `WORDLIST-HASH-FOLDER.bat` → `IMPORT-DB.bat` (см. [источники wordlist](#%D0%B8%D1%81%D1%82%D0%BE%D1%87%D0%BD%D0%B8%D0%BA%D0%B8-wordlist-plaintext)). Релиз с предсобранной LMDB появится позже.
 
 Путь по умолчанию: `engine/target/release/data/hashdb.lmdb`
 
 | Действие | Способ |
-|----------|--------|
+| --- | --- |
 | Первичный импорт | `IMPORT-DB.bat "D:\path\to\hash_pass.txt" [map_gb]` |
 | Дополнение базы | `APPEND-DB.bat "D:\new_hashes.txt" [map_gb]` или вкладка «Расшифровка» → Append |
 | Формат строки | `hash:password` (32 или 40 hex-символов) |
 
 Подготовка wordlist → `hash:pass` (по умолчанию MD5): `WORDLIST-HASH.bat "passwords.txt"` (один файл) или `WORDLIST-HASH-FOLDER.bat "D:\wordlists"` (все `*.txt` в папке, по умолчанию `wordlists\`). Выходной файл: `{random}_{имя}_md5.txt` (например `847291_passwords_md5.txt`). Опционально: второй аргумент `sha1` или `both`.
 
-`map_gb` — размер map LMDB в GB (по умолчанию 280; для ~200 GB исходника). Импорт больших файлов может занять много часов — не закрывайте окно.
+`map_gb` — размер map LMDB в GB (по умолчанию 280; для \~200 GB исходника). Импорт больших файлов может занять много часов — не закрывайте окно.
 
 Перед import/append **закройте** GUI (LMDB не поддерживает одновременную запись из двух процессов).
 
+</details>
+
 ---
 
-## Сборка базы с нуля
+
+<details>
+<summary>Сборка базы с нуля</summary>
+
 
 Пошаговая инструкция: как самим собрать и пополнять `hashdb.lmdb`. Подробности по каждому `.bat` — в [SCRIPTS.md](SCRIPTS.md).
 
 ### Что нужно
 
-| | |
-|---|---|
+|  |  |
+| --- | --- |
 | **ОС** | Windows 10 / 11 |
 | **Сборка** | `BUILD.bat` (Rust stable) |
 | **Диск** | Место под raw wordlist + clean + `*_md5.txt` + LMDB (для сотен млн строк — десятки–сотни GB) |
@@ -227,13 +298,13 @@ START-LOCAL-HASH.bat
 ### Два сценария
 
 | Сценарий | Вход | Что делать |
-|----------|------|------------|
+| --- | --- | --- |
 | **A — с wordlist** | `.txt` с plain-password (один пароль на строку) | Шаги 1–5 ниже |
 | **B — уже есть hash:pass** | Файл `32hex:pass` или `40hex:pass` | Сразу `IMPORT-DB.bat` (шаг 4), без MERGE/WORDLIST-HASH |
 
 ### Шаг 1. Скачать wordlist-ы
 
-Нужны **plaintext**-списки (без `login:pass`). Источники — в разделе [Источники wordlist](#источники-wordlist-plaintext): SecLists (`rockyou.txt` — хороший старт), Weakpass, g0tmi1k, HashMob, дампы Mail.ru.
+Нужны **plaintext**-списки (без `login:pass`). Источники — в разделе [Источники wordlist](#%D0%B8%D1%81%D1%82%D0%BE%D1%87%D0%BD%D0%B8%D0%BA%D0%B8-wordlist-plaintext): SecLists (`rockyou.txt` — хороший старт), Weakpass, g0tmi1k, HashMob, дампы Mail.ru.
 
 Сложите файлы, например, в `D:\wordlists\raw\`. Используйте только законно и для своих систем.
 
@@ -270,7 +341,7 @@ IMPORT-DB.bat "D:\wordlists\847291_merged_clean_md5.txt" 4
 ```
 
 | Аргумент | Описание |
-|----------|----------|
+| --- | --- |
 | 1-й | Путь к `hash:pass` |
 | 2-й | `map_gb` — размер map LMDB (малый тест: `4`; сотни GB данных: `280`+) |
 
@@ -320,9 +391,14 @@ START-LOCAL-HASH.bat
 - Если import падает по map size — увеличьте `map_gb`.
 - На каждом этапе нужно место на диске под промежуточные файлы.
 
+</details>
+
 ---
 
-## Конфигурация
+
+<details>
+<summary>Конфигурация</summary>
+
 
 Файл рядом с exe: `LocalHashFinder.cfg`
 
@@ -339,14 +415,19 @@ ui_zoom=1.10
 
 Файл создаётся автоматически при первом запуске через `START-LOCAL-HASH.bat`.
 
+</details>
+
 ---
 
-## CLI и bat-скрипты
+
+<details>
+<summary>CLI и bat-скрипты</summary>
+
 
 > **Полная документация:** [SCRIPTS.md](SCRIPTS.md) — назначение, параметры, примеры и цепочки workflow для каждого `.bat`.
 
 | Скрипт | Команда |
-|--------|---------|
+| --- | --- |
 | `BUILD.bat` | Сборка release |
 | `START-LOCAL-HASH.bat` | Запуск GUI |
 | `START-WEB.bat` | Legacy web UI (Node.js, `server.js`) |
@@ -363,6 +444,7 @@ ui_zoom=1.10
 Отдельная утилита `TextMerger.exe` для объединения `.txt` wordlist-ов в один файл: **только plain-пароли**, по одному на строку, с dedupe.
 
 **Удаляется (мусор):**
+
 - строки с `:NULL` (регистронезависимо)
 - строки короче 3 символов после trim (`--min-len 3`)
 - пустые строки, комментарии (`#`, `;`)
@@ -393,9 +475,14 @@ engine\target\release\LocalHashFinder.exe extract-regex dump.sql --pattern "..."
 
 Полный список подкоманд: `LocalHashFinder.exe --help`
 
+</details>
+
 ---
 
-## Структура проекта
+
+<details>
+<summary>Структура проекта</summary>
+
 
 ```
 LocalHashFinder/
@@ -437,12 +524,17 @@ LocalHashFinder/
         └── ulp/                  # SwiftyULP (18 services)
 ```
 
+</details>
+
 ---
 
-## Технологии
+
+<details>
+<summary>Технологии</summary>
+
 
 | Компонент | Стек |
-|-----------|------|
+| --- | --- |
 | Язык | Rust 2021 |
 | GUI | [egui](https://github.com/emilk/egui) / [eframe](https://github.com/emilk/egui/tree/master/crates/eframe) |
 | База хешей | [LMDB](https://www.symas.com/lmdb) через [heed](https://github.com/meilisearch/heed) |
@@ -451,23 +543,33 @@ LocalHashFinder/
 | CLI | [clap](https://docs.rs/clap) |
 | Regex | [regex](https://docs.rs/regex) |
 
+</details>
+
 ---
 
-## Скриншоты
+
+<details>
+<summary>Скриншоты</summary>
+
 
 ![Local Hash Finder — вкладка «Расшифровка»](docs/screenshot-main.png)
 
 | Описание | Путь |
-|----------|------|
+| --- | --- |
 | Скриншот приложения | `docs/screenshot-main.png` |
 | Общий вид UI (макет) | `design/figma-reference.html` |
 | Вкладка «Расшифровка» (макет) | `design/figma-reference-lookup.html` |
 
 Откройте HTML-файлы в браузере для просмотра дизайн-референса.
 
+</details>
+
 ---
 
-## Сообщить об ошибке
+
+<details>
+<summary>Сообщить об ошибке</summary>
+
 
 Если что-то **не работает** или появляется ошибка:
 
@@ -477,9 +579,14 @@ LocalHashFinder/
 
 Сообщения разбираются и исправления выкладываются в `main`.
 
+</details>
+
 ---
 
-## Отказ от ответственности
+
+<details>
+<summary>Отказ от ответственности</summary>
+
 
 Local Hash Finder — **офлайн-инструмент** для работы с **вашими собственными данными** на вашем компьютере.
 
@@ -488,13 +595,21 @@ Local Hash Finder — **офлайн-инструмент** для работы 
 - Вы несёте ответственность за соблюдение законодательства и правил использования данных
 - Не публикуйте в Issues реальные дампы, combo-листы или персональные данные
 
+</details>
+
 ---
 
-## Лицензия
+
+<details>
+<summary>Лицензия</summary>
+
 
 [MIT License](LICENSE) — Copyright (c) 2026 LocalHashFinder contributors
 
+</details>
+
 ---
+
 
 # English
 
@@ -504,7 +619,9 @@ Local Hash Finder is a portable Windows application written in Rust. All process
 
 ---
 
-## Table of contents (EN)
+<details>
+<summary>Table of contents (EN)</summary>
+
 
 - [Features](#features)
 - [User interface](#user-interface)
@@ -523,13 +640,19 @@ Local Hash Finder is a portable Windows application written in Rust. All process
 - [Disclaimer](#disclaimer)
 - [License](#license-en)
 
+</details>
+
 ---
 
-## Features
+
+<details>
+<summary>Features</summary>
+
 
 Seven sidebar modules:
 
-### 1. Hash Lookup
+<details>
+<summary>1. Hash Lookup</summary>
 
 Batch password lookup for MD5/SHA1 against a local LMDB database.
 
@@ -541,14 +664,20 @@ Batch password lookup for MD5/SHA1 against a local LMDB database.
 - **Append** — add entries, skip duplicate keys (`APPEND-DB.bat` / GUI)
 - Pause, stop, open results in Explorer
 
-### 2. Merge
+</details>
+
+<details>
+<summary>2. Merge</summary>
 
 Combine `mail:hashedpass` + `hash:plainpass` → `mail:plainpass`.
 
 - Outputs: `{stem}_plain.txt`, `{stem}_plain_nohash.txt`, `{stem}_trash.txt`
 - CLI: `merge --mail … --dehash …` / `MERGE.bat`
 
-### 3. SQL Extract
+</details>
+
+<details>
+<summary>3. SQL Extract</summary>
 
 Extract `email:md5` / `email:sha1` from SQL dumps via regex.
 
@@ -556,7 +685,10 @@ Extract `email:md5` / `email:sha1` from SQL dumps via regex.
 - Parallel processing (up to 5 threads), UTF-8 / Windows-1252
 - CLI: `extract-sql` / `EXTRACT-SQL.bat`
 
-### 4. SQL Columns
+</details>
+
+<details>
+<summary>4. SQL Columns</summary>
 
 Extract `login:password` by column names in `CREATE TABLE` / `INSERT`.
 
@@ -564,7 +696,10 @@ Extract `login:password` by column names in `CREATE TABLE` / `INSERT`.
 - Folder batch mode
 - CLI: `extract-sql-columns`
 
-### 5. Custom Regex
+</details>
+
+<details>
+<summary>5. Custom Regex</summary>
 
 Custom regex extraction with output templates (`$1`, `$2`, `${name}`).
 
@@ -572,36 +707,59 @@ Custom regex extraction with output templates (`$1`, `$2`, `${name}`).
 - Flags: case-insensitive, multiline, dotall, dedupe
 - CLI: `extract-regex`
 
-### 6. ComboKit (11 tools)
+</details>
+
+<details>
+<summary>6. ComboKit</summary>
 
 Compare · Combo filter · Email filter · Name/Password split · MX check · Scraper (txt/sql/json) · Provider analyze · Dedupe · Filter lines · Merge lines · Split file
 
-### 7. ULP / SwiftyULP (18 services)
+</details>
+
+<details>
+<summary>7. ULP</summary>
 
 Sort · Sort Country · Sort Keyword · Search · Extract url:login:pass · Extract login:pass · Extract user:pass · Clean (dedupe, empty, junk, blacklist, chars, weak, protocols, capture) · Misc (merge, split, filter)
 
 Supports `.zip` / `.7z` / `.rar` archives and folders.
 
+</details>
+
+</details>
+
 ---
 
-## User interface
+
+<details>
+<summary>User interface</summary>
+
 
 - Crypto-dashboard dark theme (RecehTok-inspired)
 - **RU / EN** language toggle
 - **Frameless** custom window chrome (rounded corners on Windows)
 - Per-tab log, results panel, and instructions
 
+</details>
+
 ---
 
-## Requirements
+
+<details>
+<summary>Requirements</summary>
+
 
 - Windows 10 / 11
 - Rust (stable) + `cargo` for building from source
 - Sufficient disk space for LMDB (large maps for huge hash files)
 
+</details>
+
 ---
 
-## Quick start
+
+<details>
+<summary>Quick start</summary>
+
 
 ```bat
 BUILD.bat
@@ -610,16 +768,21 @@ START-LOCAL-HASH.bat
 
 Binary: `engine/target/release/LocalHashFinder.exe`
 
+</details>
+
 ---
 
-## Wordlist sources (plaintext)
+
+<details>
+<summary>Wordlist sources (plaintext)</summary>
+
 
 Public resources for **plain-password** lists (use only legally and on systems you own):
 
 **Catalogs and sites**
 
 | Resource | Description |
-|----------|-------------|
+| --- | --- |
 | [HashMob](https://hashmob.net/) | Hash lookup community; wordlists and research materials |
 | [Weakpass](https://weakpass.com/wordlist) | Large public wordlists (partially free) |
 | [g0tmi1k — wordlists](https://download.g0tmi1k.com/wordlists) | Wordlist catalog for pentest and security audits |
@@ -628,12 +791,12 @@ Public resources for **plain-password** lists (use only legally and on systems y
 **Large plaintext dumps (Mail.ru Cloud, .txt)**
 
 | Link | Size |
-|------|------|
-| [260M passwords](https://cloud.mail.ru/public/HsHb/JamxkSKRF) | ~260M |
-| [243M passwords](https://cloud.mail.ru/public/hEUf/XJkHjc6Ny) | ~243M |
-| [358M passwords](https://cloud.mail.ru/public/EnHr/Qx1hYDDrC) | ~358M |
-| [112M passwords](https://cloud.mail.ru/public/K6Ho/HCcQFxHNH) | ~112M |
-| [950M passwords](https://cloud.mail.ru/public/eo1N/SYYp5gELP) | ~950M |
+| --- | --- |
+| [260M passwords](https://cloud.mail.ru/public/HsHb/JamxkSKRF) | \~260M |
+| [243M passwords](https://cloud.mail.ru/public/hEUf/XJkHjc6Ny) | \~243M |
+| [358M passwords](https://cloud.mail.ru/public/EnHr/Qx1hYDDrC) | \~358M |
+| [112M passwords](https://cloud.mail.ru/public/K6Ho/HCcQFxHNH) | \~112M |
+| [950M passwords](https://cloud.mail.ru/public/eo1N/SYYp5gELP) | \~950M |
 | [999M+ passwords](https://cloud.mail.ru/public/Coni/QgPayRbhv) | 999M+ |
 
 Plan for large disk space on hundred-million-line files; run `MERGE-CLEAN.bat` before hashing.
@@ -644,11 +807,16 @@ Plan for large disk space on hundred-million-line files; run `MERGE-CLEAN.bat` b
 download .txt → MERGE-CLEAN.bat (passwords only) → WORDLIST-HASH-FOLDER.bat → IMPORT-DB.bat
 ```
 
+</details>
+
 ---
 
-## LMDB database
 
-> **Pre-built `hashdb.lmdb` is not published on GitHub Releases yet** — the database is not shipped with the repo. For now, **build it locally**: wordlist → `MERGE-CLEAN.bat` → `WORDLIST-HASH-FOLDER.bat` → `IMPORT-DB.bat` (see [wordlist sources](#wordlist-sources-plaintext)). A release with a packaged LMDB is planned for later.
+<details>
+<summary>LMDB database</summary>
+
+
+> **Pre-built** `hashdb.lmdb` **is not published on GitHub Releases yet** — the database is not shipped with the repo. For now, **build it locally**: wordlist → `MERGE-CLEAN.bat` → `WORDLIST-HASH-FOLDER.bat` → `IMPORT-DB.bat` (see [wordlist sources](#wordlist-sources-plaintext)). A release with a packaged LMDB is planned for later.
 
 Default path: `engine/target/release/data/hashdb.lmdb`
 
@@ -659,16 +827,21 @@ Default path: `engine/target/release/data/hashdb.lmdb`
 
 Close the GUI before import/append operations.
 
+</details>
+
 ---
 
-## Building the database from scratch
+
+<details>
+<summary>Building the database from scratch</summary>
+
 
 Step-by-step guide to build and extend `hashdb.lmdb`. Per-script details: [SCRIPTS.md](SCRIPTS.md).
 
 ### Requirements
 
-| | |
-|---|---|
+|  |  |
+| --- | --- |
 | **OS** | Windows 10 / 11 |
 | **Build** | `BUILD.bat` (Rust stable) |
 | **Disk** | Space for raw wordlists + clean + `*_md5.txt` + LMDB |
@@ -677,7 +850,7 @@ Step-by-step guide to build and extend `hashdb.lmdb`. Per-script details: [SCRIP
 ### Two scenarios
 
 | Scenario | Input | Action |
-|----------|-------|--------|
+| --- | --- | --- |
 | **A — from wordlists** | Plain-password `.txt` (one password per line) | Steps 1–5 below |
 | **B — hash:pass ready** | `32hex:pass` or `40hex:pass` file | Skip to `IMPORT-DB.bat` (step 4) |
 
@@ -720,7 +893,7 @@ IMPORT-DB.bat "D:\wordlists\847291_merged_clean_md5.txt" 4
 ```
 
 | Arg | Description |
-|-----|-------------|
+| --- | --- |
 | 1st | Path to `hash:pass` file |
 | 2nd | `map_gb` — LMDB map size (small test: `4`; hundreds of GB: `280`+) |
 
@@ -770,9 +943,14 @@ START-LOCAL-HASH.bat
 - Increase `map_gb` if import fails on map size.
 - Plan disk space for intermediate files at each stage.
 
+</details>
+
 ---
 
-## Configuration
+
+<details>
+<summary>Configuration</summary>
+
 
 `LocalHashFinder.cfg` next to the executable:
 
@@ -782,14 +960,19 @@ ui_lang=en
 ui_zoom=1.10
 ```
 
+</details>
+
 ---
 
-## CLI and batch scripts
+
+<details>
+<summary>CLI and batch scripts</summary>
+
 
 > **Full reference:** [SCRIPTS.md](SCRIPTS.md) — purpose, arguments, examples, and workflows for every `.bat`.
 
 | Script | Purpose |
-|--------|---------|
+| --- | --- |
 | `BUILD.bat` | Release build |
 | `START-LOCAL-HASH.bat` | Launch GUI |
 | `START-WEB.bat` | Legacy web UI (Node.js, requires `server.js`) |
@@ -816,37 +999,57 @@ engine\target\release\TextMerger.exe merge --input wordlists --output merged.txt
 
 Run `LocalHashFinder.exe --help` for all subcommands.
 
----
-
-## Project structure
-
-See the tree in the [Russian section](#структура-проекта) above.
+</details>
 
 ---
 
-## Tech stack
+
+<details>
+<summary>Project structure</summary>
+
+
+See the tree in the [Russian section](#%D1%81%D1%82%D1%80%D1%83%D0%BA%D1%82%D1%83%D1%80%D0%B0-%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%D0%B0) above.
+
+</details>
+
+---
+
+
+<details>
+<summary>Tech stack</summary>
+
 
 Rust · egui/eframe · LMDB (heed) · rayon · zip · sevenz-rust · clap · regex
 
 CI: `.github/workflows/rust.yml` (`cargo check`, `cargo test` on Windows)
 
+</details>
+
 ---
 
-## Screenshots
+
+<details>
+<summary>Screenshots</summary>
+
 
 ![Local Hash Finder — Hash Lookup tab](docs/screenshot-main.png)
 
 | Description | Path |
-|-------------|------|
+| --- | --- |
 | App screenshot | `docs/screenshot-main.png` |
 | UI mockup | `design/figma-reference.html` |
 | Lookup tab mockup | `design/figma-reference-lookup.html` |
 
 Open the HTML files in a browser to preview the design reference.
 
+</details>
+
 ---
 
-## Report a bug
+
+<details>
+<summary>Report a bug</summary>
+
 
 If something **does not work** or shows an error:
 
@@ -856,9 +1059,14 @@ If something **does not work** or shows an error:
 
 Reports are triaged and fixes land on `main`.
 
+</details>
+
 ---
 
-## Disclaimer
+
+<details>
+<summary>Disclaimer</summary>
+
 
 Local Hash Finder is an **offline tool** for **your own data** on **your machine**.
 
@@ -867,8 +1075,25 @@ Local Hash Finder is an **offline tool** for **your own data** on **your machine
 - You are responsible for lawful use
 - Do not attach real dumps or PII to GitHub Issues
 
+</details>
+
 ---
 
-## License
+
+<details>
+<summary>License</summary>
+
 
 [MIT License](LICENSE) — Copyright (c) 2026 LocalHashFinder contributors
+
+</details>
+
+---
+
+
+<details>
+<summary>Спонсор — LEAKBASE Official Forum</summary>
+
+[![LEAKBASE Official Forum](docs/readme-footer.png)](https://leakbase.su)
+
+</details>

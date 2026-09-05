@@ -362,7 +362,7 @@ EXTRACT-SQL.bat "dump.sql" "output.txt"
 
 | Скрипт | Назначение |
 |--------|------------|
-| `INSTALL-README-AUTO-COMMIT-TASK.bat` | Планировщик Windows: проверка **каждые 3 мин** + Cursor hook |
+| `INSTALL-README-AUTO-COMMIT-TASK.bat` | Планировщик Windows: проверка **каждые 15 мин** + Cursor hook |
 | `WATCH-README-AUTO-COMMIT.bat` | Watcher: коммит **~8 сек после сохранения** (окно держать открытым) |
 | `UNINSTALL-README-AUTO-COMMIT-TASK.bat` | Удалить задачу планировщика |
 | `UPDATE-README-HOOK.bat` | Обновить Cursor hook (только README.md) |

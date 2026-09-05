@@ -6,7 +6,7 @@ set "TASK=LocalHashFinder-README-AutoCommit"
 set "RUNNER=%~dp0scripts\run-auto-commit-readme.bat"
 
 echo Installing Windows scheduled task: %TASK%
-echo   Every 3 minutes — commit README.md if changed, then push
+echo   Every 15 minutes — commit README.md if changed, then push
 echo.
 
 schtasks /Query /TN "%TASK%" >nul 2>&1
@@ -15,7 +15,7 @@ if not errorlevel 1 (
   schtasks /Delete /TN "%TASK%" /F >nul
 )
 
-schtasks /Create /TN "%TASK%" /TR "\"%RUNNER%\"" /SC MINUTE /MO 3 /F
+schtasks /Create /TN "%TASK%" /TR "\"%RUNNER%\"" /SC MINUTE /MO 15 /F
 if errorlevel 1 (
   echo FAILED. Run this bat as Administrator if access denied.
   pause
@@ -26,7 +26,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0scripts\setup-cursor-r
 
 echo.
 echo Done.
-echo   Task: %TASK%  ^(every 3 min^)
+echo   Task: %TASK%  ^(every 15 min^)
 echo   Cursor hook: .cursor\hooks.json  ^(after agent/Tab edits^)
 echo.
 echo Optional — instant watcher after save:
