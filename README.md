@@ -26,7 +26,8 @@
 14. [Сообщить об ошибке](#%D1%81%D0%BE%D0%BE%D0%B1%D1%89%D0%B8%D1%82%D1%8C-%D0%BE%D0%B1-%D0%BE%D1%88%D0%B8%D0%B1%D0%BA%D0%B5)
 15. [Отказ от ответственности](#%D0%BE%D1%82%D0%BA%D0%B0%D0%B7-%D0%BE%D1%82-%D0%BE%D1%82%D0%B2%D0%B5%D1%82%D1%81%D1%82%D0%B2%D0%B5%D0%BD%D0%BD%D0%BE%D1%81%D1%82%D0%B8)
 16. [Лицензия](#%D0%BB%D0%B8%D1%86%D0%B5%D0%BD%D0%B7%D0%B8%D1%8F)
-17. [English](#english)
+17. [Hashcat и LocalHashFinder](#hashcat-%D0%B8-localhashfinder)
+18. [English](#english)
 
 ---
 
@@ -621,6 +622,39 @@ Local Hash Finder — **офлайн-инструмент** для работы 
 ---
 
 
+<details>
+<summary>Hashcat и LocalHashFinder</summary>
+
+
+**LocalHashFinder** и **[Hashcat](https://hashcat.net/hashcat/)** решают разные задачи; вместе они сильнее, чем по отдельности.
+
+| | LocalHashFinder | Hashcat |
+| --- | --- | --- |
+| Суть | lookup по своей LMDB (`hash:pass`) | crack / перебор кандидатов |
+| Алгоритмы | **только MD5 и SHA1** | сотни режимов (bcrypt, NTLM, WPA…) |
+| Железо | CPU, много потоков | **GPU** — главное преимущество |
+| Сильная сторона | свой огромный офлайн-пак + пакетный combo/SQL/ULP | **rules, masks, hybrid** — уникальные good, которых нет в публичных дампах |
+
+**Почему rules в Hashcat дают «уникальные» good:** словарь + правила (`-r best64.rule`, свои `.rule`) и маски генерируют варианты (`Password1!`, `p@ssw0rd2024`), которых **нет ни в одном leak-базе**. LocalHashFinder ищет только то, что уже лежит в вашей LMDB — новые plaintext он не «выдумает».
+
+**Типичная связка:**
+
+```
+Hashcat (rules / mask / GPU)  →  hash:pass / potfile
+        ↓
+IMPORT-DB.bat / APPEND-DB.bat  →  hashdb.lmdb
+        ↓
+LocalHashFinder lookup  →  batch combo, merge, GUI
+```
+
+На мощном CPU (и в перспективе GPU для wordlist-hash) можно собрать **свой большой MD5/SHA1-пак** и дальше гонять combo быстрее и удобнее, чем каждый раз поднимать Hashcat — но **только для MD5/SHA1** и только для **уже известных** пар hash:pass.
+
+**Hashcat законен?** Да — это легальный open-source инструмент для аудита и восстановления паролей. Как и LocalHashFinder: **законен сам инструмент**, ответственность за **законность использования** на вас — только свои системы, свои дампы или явное разрешение владельца. Чужие базы и аккаунты без санкции — незаконны.
+
+</details>
+
+---
+
 # English
 
 **Offline desktop toolkit for hash lookup, combo processing, and ULP tools.**
@@ -649,6 +683,7 @@ Local Hash Finder is a portable Windows application written in Rust. All process
 - [Report a bug](#report-a-bug)
 - [Disclaimer](#disclaimer)
 - [License](#license-en)
+- [Hashcat and LocalHashFinder](#hashcat-and-localhashfinder)
 
 </details>
 
@@ -1110,6 +1145,39 @@ Local Hash Finder is an **offline tool** for **your own data** on **your machine
 
 ---
 
+
+<details>
+<summary>Hashcat and LocalHashFinder</summary>
+
+
+**LocalHashFinder** and **[Hashcat](https://hashcat.net/hashcat/)** solve different problems; together they complement each other.
+
+| | LocalHashFinder | Hashcat |
+| --- | --- | --- |
+| Core idea | lookup in your LMDB (`hash:pass`) | crack / candidate generation |
+| Algorithms | **MD5 and SHA1 only** | hundreds of modes (bcrypt, NTLM, WPA…) |
+| Hardware | CPU, many threads | **GPU** is the main strength |
+| Strength | huge offline pack + batch combo/SQL/ULP | **rules, masks, hybrid** — unique hits not in public leaks |
+
+**Why Hashcat rules yield “unique” goods:** wordlist + rules (`-r best64.rule`, custom `.rule`) and masks generate variants (`Password1!`, `p@ssw0rd2024`) that **never appeared in public breach databases**. LocalHashFinder only finds what is already in your LMDB — it does not invent new plaintexts.
+
+**Typical workflow:**
+
+```
+Hashcat (rules / mask / GPU)  →  hash:pass / potfile
+        ↓
+IMPORT-DB.bat / APPEND-DB.bat  →  hashdb.lmdb
+        ↓
+LocalHashFinder lookup  →  batch combo, merge, GUI
+```
+
+On strong hardware you can build a **large MD5/SHA1 pack** and run combo workflows faster and more conveniently than firing Hashcat every time — but **only for MD5/SHA1** and **only for hash:pass pairs you already recovered**.
+
+**Is Hashcat legal?** Yes — it is a legitimate open-source password recovery and security auditing tool. Same as LocalHashFinder: **the tool is legal**; **lawful use** is your responsibility — your systems, your dumps, or explicit owner authorization. Unauthorized use on third-party data is illegal in most jurisdictions.
+
+</details>
+
+---
 
 <details>
 <summary>Спонсор — LEAKBASE Official Forum</summary>
