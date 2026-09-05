@@ -558,10 +558,15 @@ LocalHashFinder/
 
 ![Wordlist MD5 — 84M строк за 53 сек](docs/benchmark-wordlist-md5.png)
 
+**Пакет из 3 wordlist → MD5:** ~**266 млн** строк за **~4 мин** (~1,1 млн строк/с) — по **времени изменения** файлов `7_md5.txt` … `9_md5.txt` в проводнике (18:30 → 18:35), слабый ПК.
+
+![Wordlist MD5 — 266M строк, 3 файла за ~4 мин](docs/benchmark-wordlist-md5-batch.png)
+
 | Описание | Путь |
 | --- | --- |
 | Скриншот приложения | `docs/screenshot-main.png` |
-| Бенчмарк wordlist → MD5 | `docs/benchmark-wordlist-md5.png` |
+| Бенчмарк wordlist → MD5 (1 файл) | `docs/benchmark-wordlist-md5.png` |
+| Бенчмарк wordlist → MD5 (пакет) | `docs/benchmark-wordlist-md5-batch.png` |
 | Общий вид UI (макет) | `design/figma-reference.html` |
 | Вкладка «Расшифровка» (макет) | `design/figma-reference-lookup.html` |
 
@@ -1043,10 +1048,15 @@ CI: `.github/workflows/rust.yml` (`cargo check`, `cargo test` on Windows)
 
 ![Wordlist MD5 — 84M lines in 53 sec](docs/benchmark-wordlist-md5.png)
 
+**Batch of 3 wordlists → MD5:** ~**266M** lines in **~4 min** (~1.1M lines/s) — from **file modification times** of `7_md5.txt` … `9_md5.txt` in Explorer (18:30 → 18:35), low-end PC.
+
+![Wordlist MD5 — 266M lines, 3 files in ~4 min](docs/benchmark-wordlist-md5-batch.png)
+
 | Description | Path |
 | --- | --- |
 | App screenshot | `docs/screenshot-main.png` |
-| Wordlist → MD5 benchmark | `docs/benchmark-wordlist-md5.png` |
+| Wordlist → MD5 benchmark (single file) | `docs/benchmark-wordlist-md5.png` |
+| Wordlist → MD5 benchmark (batch) | `docs/benchmark-wordlist-md5-batch.png` |
 | UI mockup | `design/figma-reference.html` |
 | Lookup tab mockup | `design/figma-reference-lookup.html` |
 
