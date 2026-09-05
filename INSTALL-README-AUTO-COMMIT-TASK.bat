@@ -33,5 +33,6 @@ echo Optional — instant watcher after save:
 echo   WATCH-README-AUTO-COMMIT.bat
 echo.
 echo Remove: UNINSTALL-README-AUTO-COMMIT-TASK.bat
+echo Update hook only: UPDATE-README-HOOK.bat
 echo.
 pause

@@ -365,6 +365,7 @@ EXTRACT-SQL.bat "dump.sql" "output.txt"
 | `INSTALL-README-AUTO-COMMIT-TASK.bat` | Планировщик Windows: проверка **каждые 3 мин** + Cursor hook |
 | `WATCH-README-AUTO-COMMIT.bat` | Watcher: коммит **~8 сек после сохранения** (окно держать открытым) |
 | `UNINSTALL-README-AUTO-COMMIT-TASK.bat` | Удалить задачу планировщика |
+| `UPDATE-README-HOOK.bat` | Обновить Cursor hook (только README.md) |
 | `scripts\auto-commit-readme.ps1` | Ядро: `git add` только README.md → commit → push |
 
 **Установка (один раз):**
