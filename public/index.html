@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Local HashFinder / ItemHash Parser / RegexExtra v 1.0.0</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tektur:wght@400..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>Local Hash Finder</h1>
+          <p>Software for fast dehashed database / MD5 - SHA1</p>
+        </div>
+      </div>
+      <div class="db-pill" id="dbStatus">DB: …</div>
+    </header>
+
+    <main class="grid">
+      <section class="panel dropzone" id="dropzone">
+        <div class="panel-title">Файлы</div>
+        <p class="hint">Перетащите .txt сюда или выберите файлы</p>
+        <p class="formats">email:hash · hash · email:hash:extra</p>
+        <input type="file" id="fileInput" multiple accept=".txt,.log,.csv" hidden />
+        <button class="btn secondary" id="pickBtn">Выбрать файлы</button>
+        <ul class="file-list" id="fileList"></ul>
+      </section>
+
+      <section class="panel controls">
+        <div class="panel-title">Параметры</div>
+        <label class="field">
+          <span>Потоки (размер пакета)</span>
+          <input type="number" id="threads" min="1" max="5000" value="200" />
+        </label>
+        <div class="actions">
+          <button class="btn primary" id="startBtn">Старт</button>
+          <button class="btn danger" id="stopBtn" disabled>Стоп</button>
+          <button class="btn secondary" id="reloadDbBtn">Обновить БД</button>
+        </div>
+        <div class="stat-grid">
+          <div class="stat"><span>Всего</span><strong id="statTotal">0</strong></div>
+          <div class="stat ok"><span>Найдено</span><strong id="statFound">0</strong></div>
+          <div class="stat warn"><span>Не найдено</span><strong id="statNohash">0</strong></div>
+          <div class="stat bad"><span>Мусор</span><strong id="statBad">0</strong></div>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="progress-meta">
+          <span id="progressText">Готов</span>
+          <span id="speedText"></span>
+        </div>
+      </section>
+
+      <section class="panel log-panel">
+        <div class="panel-title">Лог</div>
+        <pre id="log"></pre>
+      </section>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

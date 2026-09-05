@@ -1,0 +1,42 @@
+[package]
+name = "local-hash-finder"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "LocalHashFinder"
+path = "src/main.rs"
+
+[[bin]]
+name = "TextMerger"
+path = "src/bin/text_merger.rs"
+
+[dependencies]
+anyhow = "1"
+encoding_rs = "0.8"
+clap = { version = "4", features = ["derive"] }
+eframe = "0.29"
+egui = "0.29"
+raw-window-handle = "0.6"
+heed = "0.20"
+hex = "0.4"
+md5 = "0.7"
+sha1 = "0.10"
+parking_lot = "0.12"
+regex = "1"
+rand = "0.8"
+rayon = "1.10"
+rfd = "0.15"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+zip = "2.2"
+sevenz-rust = "0.6"
+tempfile = "3"
+
+[target.'cfg(windows)'.dependencies]
+windows-sys = { version = "0.59", features = ["Win32_Foundation", "Win32_Graphics_Dwm"] }
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true

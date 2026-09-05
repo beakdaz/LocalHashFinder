@@ -1,0 +1,388 @@
+/* AntiPublic / MULTIauther palette — multiauther/frontend/src/index.css */
+
+:root {
+  color-scheme: dark;
+  --background: #0f0f0f;
+  --foreground: #ffffff;
+  --card: #1a1a1a;
+  --card-foreground: #ffffff;
+  --primary: #22c55e;
+  --primary-foreground: #ffffff;
+  --secondary: #212121;
+  --secondary-foreground: #ffffff;
+  --muted: #212121;
+  --muted-foreground: #9ca3af;
+  --accent: #262626;
+  --accent-foreground: #ffffff;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #292929;
+  --input: #212121;
+  --ring: #22c55e;
+  --radius: 0.375rem;
+  --stat-valid: #22c55e;
+  --stat-twofa: #f59e0b;
+  --stat-invalid: #ef4444;
+
+  --space-xs: 0.375rem;
+  --space-sm: 0.5rem;
+  --space-md: 0.75rem;
+  --space-lg: 1rem;
+
+  --text-xs: 0.625rem;
+  --text-sm: 0.8125rem;
+  --text-base: 0.875rem;
+  --text-lg: 1rem;
+
+  --container-width: clamp(320px, 95vw, 1200px);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: var(--text-base);
+  line-height: 1.5;
+}
+
+.app {
+  width: var(--container-width);
+  margin: 0 auto;
+  padding: var(--space-lg);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-md);
+  background: var(--card);
+  border: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
+  border-radius: var(--radius);
+  padding: var(--space-md) var(--space-lg);
+}
+
+.brand {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: center;
+}
+
+.logo {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.45);
+  flex-shrink: 0;
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.brand p {
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: var(--text-xs);
+}
+
+.db-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: 4px 8px;
+  border-radius: var(--radius);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  white-space: nowrap;
+  background: var(--card);
+  border: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
+  color: var(--muted-foreground);
+}
+
+.db-pill::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--stat-valid);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: var(--space-md);
+  flex: 1;
+}
+
+.panel {
+  background: var(--card);
+  border: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
+  border-radius: var(--radius);
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.panel-title {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--muted-foreground);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-xs);
+}
+
+.dropzone {
+  min-height: 240px;
+  border-style: dashed;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.dropzone.dragover {
+  border-color: color-mix(in srgb, var(--primary) 55%, transparent);
+  background: color-mix(in srgb, var(--primary) 8%, transparent);
+}
+
+.hint {
+  color: var(--muted-foreground);
+  margin: 0 0 6px;
+}
+
+.formats {
+  color: var(--muted-foreground);
+  font-size: var(--text-xs);
+  font-family: ui-monospace, "JetBrains Mono", monospace;
+  margin: 0 0 var(--space-md);
+}
+
+.btn {
+  border: 0;
+  border-radius: var(--radius);
+  padding: 6px 12px;
+  font-family: inherit;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn.primary {
+  border: 1px solid color-mix(in srgb, var(--primary) 50%, transparent);
+  background: color-mix(in srgb, var(--primary) 10%, transparent);
+  color: var(--primary);
+}
+
+.btn.primary:hover:not(:disabled) {
+  border-color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 20%, transparent);
+}
+
+.btn.secondary {
+  background: var(--card);
+  color: var(--muted-foreground);
+  border: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
+}
+
+.btn.secondary:hover:not(:disabled) {
+  background: var(--accent);
+  color: var(--foreground);
+  border-color: color-mix(in srgb, var(--primary) 30%, transparent);
+}
+
+.btn.danger {
+  border: 1px solid color-mix(in srgb, var(--destructive) 50%, transparent);
+  background: color-mix(in srgb, var(--destructive) 10%, transparent);
+  color: var(--destructive);
+}
+
+.btn.danger:hover:not(:disabled) {
+  border-color: var(--destructive);
+  background: color-mix(in srgb, var(--destructive) 20%, transparent);
+}
+
+.field {
+  display: grid;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-md);
+}
+
+.field span {
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+}
+
+.field input {
+  width: 100%;
+  padding: 6px 10px;
+  border-radius: var(--radius);
+  border: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
+  background: var(--input);
+  color: var(--foreground);
+  font-family: ui-monospace, monospace;
+  font-size: var(--text-sm);
+  outline: none;
+}
+
+.field input:focus {
+  border-color: color-mix(in srgb, var(--primary) 55%, transparent);
+  background: var(--accent);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.stat {
+  background: var(--card);
+  border: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
+  border-radius: var(--radius);
+  padding: 6px 10px;
+  text-align: center;
+}
+
+.stat span {
+  display: block;
+  color: var(--muted-foreground);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.stat strong {
+  font-family: ui-monospace, monospace;
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+
+.stat.ok strong {
+  color: var(--stat-valid);
+}
+
+.stat.warn strong {
+  color: var(--stat-twofa);
+}
+
+.stat.bad strong {
+  color: var(--stat-invalid);
+}
+
+.progress-wrap {
+  height: 6px;
+  background: var(--input);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--primary), #4ade80);
+  border-radius: 999px;
+  transition: width 0.15s ease;
+}
+
+.progress-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  margin-top: var(--space-xs);
+  color: var(--muted-foreground);
+  font-size: var(--text-xs);
+  font-family: ui-monospace, monospace;
+}
+
+.file-list {
+  list-style: none;
+  padding: 0;
+  margin: var(--space-md) 0 0;
+  max-height: 180px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.file-list li {
+  padding: 4px 8px;
+  border: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
+  border-radius: var(--radius);
+  background: var(--input);
+  word-break: break-all;
+  font-size: var(--text-xs);
+  font-family: ui-monospace, monospace;
+  color: var(--muted-foreground);
+}
+
+.log-panel {
+  grid-column: 1 / -1;
+}
+
+#log {
+  margin: 0;
+  min-height: 140px;
+  max-height: 220px;
+  overflow: auto;
+  background: var(--background);
+  border: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
+  border-radius: var(--radius);
+  padding: var(--space-md);
+  color: var(--muted-foreground);
+  font-family: ui-monospace, monospace;
+  font-size: var(--text-xs);
+  line-height: 1.6;
+}
+
+#log:empty::before {
+  content: "Ожидание событий…";
+  color: var(--muted-foreground);
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

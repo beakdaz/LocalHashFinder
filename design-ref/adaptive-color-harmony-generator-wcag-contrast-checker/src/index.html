@@ -1,0 +1,190 @@
+<div class="app">
+	<!-- Header -->
+	<header class="header">
+		<div class="header-badge">
+			<span>🎨</span>
+			<span>Min-Max Color System</span>
+		</div>
+		<h1 class="header-title">Color Harmony Generator</h1>
+		<p class="header-subtitle">Create accessible color palettes with real-time WCAG contrast validation using
+			min/max color boundaries</p>
+	</header>
+
+	<!-- Main Content Grid -->
+	<div class="main-grid">
+		<!-- Control Panel -->
+		<aside class="control-panel">
+			<!-- Base Color Picker -->
+			<div class="panel-section">
+				<h3 class="panel-section-title">
+					<span>🎯</span>
+					<span>Base Color</span>
+				</h3>
+				<div class="color-picker-wrapper">
+					<input type="color" class="color-picker" id="baseColorPicker" value="#6366f1">
+					<div class="color-info">
+						<span class="color-info-label">HEX</span>
+						<div class="color-info-value">
+							<span id="hexValue">#6366F1</span>
+							<button class="copy-btn" data-copy="hex" title="Copy HEX">📋</button>
+						</div>
+						<span class="color-info-label">HSL</span>
+						<div class="color-info-value">
+							<span id="hslValue">239°, 84%, 67%</span>
+							<button class="copy-btn" data-copy="hsl" title="Copy HSL">📋</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Color Wheel -->
+			<div class="panel-section">
+				<div class="wheel-container">
+					<div class="color-wheel">
+						<div class="wheel-ring"></div>
+						<div class="wheel-marker primary" id="primaryMarker"></div>
+						<div class="wheel-marker" id="marker1"></div>
+						<div class="wheel-marker" id="marker2"></div>
+						<div class="wheel-marker" id="marker3"></div>
+						<div class="wheel-marker" id="marker4"></div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Harmony Mode -->
+			<div class="panel-section">
+				<h3 class="panel-section-title">
+					<span>🔄</span>
+					<span>Harmony Mode</span>
+				</h3>
+				<div class="harmony-modes">
+					<button class="harmony-btn" data-harmony="complementary">
+						<span>◐</span>
+						<span>Complementary</span>
+					</button>
+					<button class="harmony-btn active" data-harmony="analogous">
+						<span>◔</span>
+						<span>Analogous</span>
+					</button>
+					<button class="harmony-btn" data-harmony="triadic">
+						<span>△</span>
+						<span>Triadic</span>
+					</button>
+					<button class="harmony-btn" data-harmony="tetradic">
+						<span>◇</span>
+						<span>Tetradic</span>
+					</button>
+					<button class="harmony-btn" data-harmony="split">
+						<span>⋔</span>
+						<span>Split Comp.</span>
+					</button>
+					<button class="harmony-btn" data-harmony="monochromatic">
+						<span>▤</span>
+						<span>Monochrome</span>
+					</button>
+				</div>
+			</div>
+
+			<!-- Saturation Control with min/max -->
+			<div class="panel-section">
+				<div class="range-control">
+					<div class="range-header">
+						<span class="range-label">Saturation</span>
+						<span class="range-value" id="saturationValue">80%</span>
+					</div>
+					<input type="range" class="range-input" id="saturationRange" min="10" max="100" value="80">
+					<div class="range-limits">
+						<span>Min: 10%</span>
+						<span>Max: 100%</span>
+					</div>
+				</div>
+			</div>
+
+			<!-- Lightness Control with min/max -->
+			<div class="panel-section">
+				<div class="range-control">
+					<div class="range-header">
+						<span class="range-label">Lightness</span>
+						<span class="range-value" id="lightnessValue">60%</span>
+					</div>
+					<input type="range" class="range-input" id="lightnessRange" min="15" max="90" value="60">
+					<div class="range-limits">
+						<span>Min: 15%</span>
+						<span>Max: 90%</span>
+					</div>
+				</div>
+			</div>
+
+			<!-- Harmony Angle (for applicable modes) -->
+			<div class="panel-section" id="angleSection">
+				<div class="range-control">
+					<div class="range-header">
+						<span class="range-label">Harmony Angle</span>
+						<span class="range-value" id="angleValue">30°</span>
+					</div>
+					<input type="range" class="range-input" id="angleRange" min="15" max="60" value="30">
+					<div class="range-limits">
+						<span>Min: 15°</span>
+						<span>Max: 60°</span>
+					</div>
+				</div>
+			</div>
+
+			<!-- Quick Actions -->
+			<div class="panel-section">
+				<div class="quick-actions">
+					<button class="action-btn" id="randomBtn">🎲 Random</button>
+					<button class="action-btn primary" id="exportBtn">📤 Export</button>
+				</div>
+			</div>
+		</aside>
+
+		<!-- Output Area -->
+		<div class="output-area">
+			<!-- Color Palette -->
+			<section class="palette-section">
+				<div class="palette-header">
+					<h2 class="palette-title">Generated Palette</h2>
+					<span class="palette-mode-tag" id="modeTag">Analogous</span>
+				</div>
+				<div class="palette-colors" id="paletteColors">
+					<!-- Colors will be dynamically inserted here -->
+				</div>
+			</section>
+
+			<!-- Accessibility Check -->
+			<section class="a11y-section">
+				<div class="a11y-header">
+					<h2 class="a11y-title">
+						<span>♿</span>
+						<span>Accessibility Check</span>
+					</h2>
+					<span class="wcag-badge" id="wcagOverall">Checking...</span>
+				</div>
+				<div class="a11y-grid" id="contrastGrid">
+					<!-- Contrast checks will be dynamically inserted here -->
+				</div>
+			</section>
+
+			<!-- Export Code -->
+			<section class="export-section">
+				<div class="export-header">
+					<h2 class="export-title">Export Code</h2>
+					<div class="export-tabs">
+						<button class="export-tab active" data-format="css">CSS</button>
+						<button class="export-tab" data-format="scss">SCSS</button>
+						<button class="export-tab" data-format="tailwind">Tailwind</button>
+						<button class="export-tab" data-format="json">JSON</button>
+					</div>
+				</div>
+				<div class="code-block">
+					<button class="code-copy-btn" id="copyCodeBtn">Copy</button>
+					<pre><code id="exportCode">/* Code will appear here */</code></pre>
+				</div>
+			</section>
+		</div>
+	</div>
+</div>
+
+<!-- Toast Notification -->
+<div class="toast" id="toast"></div>

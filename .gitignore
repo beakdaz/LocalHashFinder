@@ -1,0 +1,53 @@
+# Rust build artifacts
+**/target/
+**/target-build/
+**/*.rs.bk
+
+# Binaries
+*.exe
+LocalHashFinder.exe
+*.dll
+*.so
+*.dylib
+
+# User data / wordlists / hash outputs (never publish)
+ext/
+wordlists/
+*_md5.txt
+*_sha1.txt
+
+# Local database and runtime data (user-specific, often huge)
+data/
+**/data/hashdb.lmdb/
+**/*.lmdb/
+**/*.mdb
+
+# Portable config and logs (may contain local paths)
+*.cfg
+*.log
+LocalHashFinder.log
+
+# IDE / editor
+.cursor/
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Node (legacy web UI)
+node_modules/
+
+# Dev scratch / generated tooling artifacts
+engine/_footer.txt
+engine/_ui_extract.txt
+engine/tools/swifty_extracted.json
+engine/tools/_offsets.txt
+
+# Dev / generated design artifacts (large base64 dumps)
+design/assets-b64.txt
