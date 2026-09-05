@@ -51,3 +51,6 @@ engine/tools/_offsets.txt
 
 # Dev / generated design artifacts (large base64 dumps)
 design/assets-b64.txt
+
+# Auto-commit README scheduler (local state)
+scripts/.readme-autocommit-state.json
