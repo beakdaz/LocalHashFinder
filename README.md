@@ -159,11 +159,27 @@ START-LOCAL-HASH.bat
 
 Публичные ресурсы для **plain-password** списков (используйте только в рамках закона и для своих систем):
 
+**Каталоги и сайты**
+
 | Ресурс | Описание |
 |--------|----------|
 | [HashMob](https://hashmob.net/) | База и сообщество по hash lookup; wordlist-ы и материалы для исследований |
 | [Weakpass](https://weakpass.com/wordlist) | Большие публичные wordlist-ы (часть бесплатна) |
+| [g0tmi1k — wordlists](https://download.g0tmi1k.com/wordlists) | Каталог wordlist-ов для pentest и аудита |
 | [SecLists — Passwords](https://github.com/danielmiessler/SecLists/tree/master/Passwords) | Классика: `rockyou.txt`, `10k-most-common.txt`, `best1050.txt` |
+
+**Крупные plaintext-дампы (Mail.ru Cloud, .txt)**
+
+| Ссылка | Размер |
+|--------|--------|
+| [260M passwords](https://cloud.mail.ru/public/HsHb/JamxkSKRF) | ~260 млн |
+| [243M passwords](https://cloud.mail.ru/public/hEUf/XJkHjc6Ny) | ~243 млн |
+| [358M passwords](https://cloud.mail.ru/public/EnHr/Qx1hYDDrC) | ~358 млн |
+| [112M passwords](https://cloud.mail.ru/public/K6Ho/HCcQFxHNH) | ~112 млн |
+| [950M passwords](https://cloud.mail.ru/public/eo1N/SYYp5gELP) | ~950 млн |
+| [999M+ passwords](https://cloud.mail.ru/public/Coni/QgPayRbhv) | 999+ млн |
+
+Для файлов на сотни миллионов строк закладывайте место на диске; перед хешированием прогоните через `MERGE-CLEAN.bat`.
 
 **Цепочка в LocalHashFinder:**
 
@@ -461,11 +477,27 @@ Binary: `engine/target/release/LocalHashFinder.exe`
 
 Public resources for **plain-password** lists (use only legally and on systems you own):
 
+**Catalogs and sites**
+
 | Resource | Description |
 |----------|-------------|
 | [HashMob](https://hashmob.net/) | Hash lookup community; wordlists and research materials |
 | [Weakpass](https://weakpass.com/wordlist) | Large public wordlists (partially free) |
+| [g0tmi1k — wordlists](https://download.g0tmi1k.com/wordlists) | Wordlist catalog for pentest and security audits |
 | [SecLists — Passwords](https://github.com/danielmiessler/SecLists/tree/master/Passwords) | Classics: `rockyou.txt`, `10k-most-common.txt`, `best1050.txt` |
+
+**Large plaintext dumps (Mail.ru Cloud, .txt)**
+
+| Link | Size |
+|------|------|
+| [260M passwords](https://cloud.mail.ru/public/HsHb/JamxkSKRF) | ~260M |
+| [243M passwords](https://cloud.mail.ru/public/hEUf/XJkHjc6Ny) | ~243M |
+| [358M passwords](https://cloud.mail.ru/public/EnHr/Qx1hYDDrC) | ~358M |
+| [112M passwords](https://cloud.mail.ru/public/K6Ho/HCcQFxHNH) | ~112M |
+| [950M passwords](https://cloud.mail.ru/public/eo1N/SYYp5gELP) | ~950M |
+| [999M+ passwords](https://cloud.mail.ru/public/Coni/QgPayRbhv) | 999M+ |
+
+Plan for large disk space on hundred-million-line files; run `MERGE-CLEAN.bat` before hashing.
 
 **LocalHashFinder pipeline:**
 
